@@ -1,0 +1,11 @@
+[project]
+name = "oafbt"
+version = "0.1.0"
+description = "Multi-strategy research backtester (OAF mini project)"
+requires-python = ">=3.11"
+
+[tool.setuptools.packages.find]
+include = ["oafbt*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
