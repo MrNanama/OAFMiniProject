@@ -1,0 +1,148 @@
+{
+ "strategy": "s15_rebalancing_flows",
+ "version": "v2",
+ "start": "2004-11-29",
+ "end": "2020-12-31",
+ "n_years": 16.08,
+ "sharpe": 0.5228459291016991,
+ "ann_ret": 0.019659462016186617,
+ "ann_vol": 0.03760087039400596,
+ "max_dd": -0.15758092594276218,
+ "calmar": 0.1214180557292722,
+ "sortino": 0.7867045555498592,
+ "skew": 0.38861493853144335,
+ "turnover_yr": 28.41261386885313,
+ "cost_drag_yr": 0.005682522773770627,
+ "fee_drag_yr": 0.0001683139586093703,
+ "total_drag_yr": 0.005850836732379998,
+ "dsr_program": 0.011718248416988226,
+ "n_trials_program": 42,
+ "ruined": "None",
+ "avg_gross_lev": 0.11197804891601788,
+ "beta_spy": 0.0018917059995548929,
+ "corr_spy": 0.009846120167250429,
+ "t_hac": 2.204839217409635,
+ "psr0": 0.9821447785257467,
+ "dsr": 0.8936034976632453,
+ "n_trials": 3,
+ "sr_subperiods": [
+  0.882,
+  0.747,
+  -0.041
+ ],
+ "sr_ci_lo": 0.02672705972240501,
+ "sr_ci_hi": 0.9656369540747288,
+ "pos_years": "13/17",
+ "hit_monthly": 0.5154639175257731,
+ "n_assets": 2,
+ "sharpe_2004_2020": 0.5228459291016991,
+ "sharpe_cost2x": 0.3672660353841779,
+ "sharpe_lag+1": -0.5410831146707775,
+ "lookahead_passed": true,
+ "lookahead_detail": {
+  "2005-03-24": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 668
+  },
+  "2008-10-30": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 1576
+  },
+  "2010-01-04": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 1871
+  },
+  "2010-05-07": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 1957
+  },
+  "2012-03-01": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 2415
+  },
+  "2014-03-17": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 2927
+  },
+  "2016-11-09": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 3597
+  },
+  "2016-12-01": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 3612
+  },
+  "2018-06-15": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 3998
+  },
+  "2019-12-05": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 4369
+  },
+  "2020-09-29": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 4574
+  }
+ },
+ "params": {
+  "stock": "SPY",
+  "bond": "TLT",
+  "z_months": 36,
+  "z_cap": 2.0,
+  "late": [
+   -2,
+   -1
+  ],
+  "early": [
+   1,
+   2
+  ],
+  "z_min": 0.5
+ },
+ "runtime_s": 6.3
+}

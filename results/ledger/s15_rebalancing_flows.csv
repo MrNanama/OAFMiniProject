@@ -1,3 +1,4 @@
 ts,strategy,version,tag,phash,params,sharpe,ann_ret,max_dd,turnover_yr,note
 2026-11-14T19:37:35+00:00,s15_rebalancing_flows,research,dev,e6ae251f12,"{""exploratory_look"": 0}",,,,,"event study: MTD stock-bond perf vs late-month / early-month spread, 1993-2020"
 2026-11-14T19:38:11+00:00,s15_rebalancing_flows,v1,dev,2b06a629cb,"{""stock"": ""SPY"", ""bond"": ""TLT"", ""z_months"": 36, ""z_cap"": 2.0, ""late"": [-2, -1], ""early"": [1, 2]}",0.38344641955907643,0.018340358309598313,-0.1678791512130705,48.57767315335086,"v1: contrarian MTD stock-bond spread days -2..-1, continuation +1..+2"
+2026-11-14T19:40:25+00:00,s15_rebalancing_flows,v2,dev,e811598608,"{""stock"": ""SPY"", ""bond"": ""TLT"", ""z_months"": 36, ""z_cap"": 2.0, ""late"": [-2, -1], ""early"": [1, 2], ""z_min"": 0.5}",0.5228459291016991,0.019659462016186617,-0.15758092594276218,28.41261386885313,round 3 change

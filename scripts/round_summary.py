@@ -18,9 +18,14 @@ RUNS = C.RESULTS / "runs"
 
 
 def latest_version(name):
+    """the version currently implemented in the module (rejected later variants are ignored)"""
+    from oafbt.strategies.registry import load
     d = RUNS / name
     if not d.exists():
         return None
+    v = load(name).version
+    if (d / v / "summary.json").exists():
+        return v
     vs = [p.name for p in d.iterdir() if p.is_dir() and re.fullmatch(r"v\d+", p.name) and (p / "summary.json").exists()]
     return max(vs, key=lambda v: int(v[1:])) if vs else None
 

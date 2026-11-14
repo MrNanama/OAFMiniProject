@@ -1,0 +1,131 @@
+{
+ "strategy": "s09_vrp_timing",
+ "version": "v2",
+ "start": "2011-06-16",
+ "end": "2020-12-31",
+ "n_years": 9.54,
+ "sharpe": 0.4902707797524455,
+ "ann_ret": 0.04392813474670955,
+ "ann_vol": 0.08959974071652889,
+ "max_dd": -0.20509359054787857,
+ "calmar": 0.19830782552650095,
+ "sortino": 0.6131176354201655,
+ "skew": -2.9644585307138076,
+ "turnover_yr": 5.559948443901964,
+ "cost_drag_yr": 0.005559948443901965,
+ "fee_drag_yr": 0.0038678646887408785,
+ "total_drag_yr": 0.009427813132642843,
+ "dsr_program": 0.04402071448480662,
+ "n_trials_program": 44,
+ "ruined": "None",
+ "avg_gross_lev": 0.128923214442091,
+ "beta_spy": 0.19959393070997297,
+ "corr_spy": 0.387194419930249,
+ "t_hac": 1.4699591111032644,
+ "psr0": 0.9255796897866276,
+ "dsr": 0.8284411931091774,
+ "n_trials": 2,
+ "sr_subperiods": [
+  0.979,
+  0.627,
+  -0.132
+ ],
+ "sr_ci_lo": -0.17124783108614958,
+ "sr_ci_hi": 1.2154395861580432,
+ "pos_years": "7/10",
+ "hit_monthly": 0.5391304347826087,
+ "n_assets": 1,
+ "sharpe_2004_2020": 0.4902707797524455,
+ "sharpe_cost2x": 0.3847273317725424,
+ "sharpe_lag+1": 0.36924659032938856,
+ "lookahead_passed": true,
+ "lookahead_detail": {
+  "2005-03-24": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 0
+  },
+  "2010-05-07": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 0
+  },
+  "2012-03-01": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 291
+  },
+  "2014-02-12": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 781
+  },
+  "2014-03-17": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 803
+  },
+  "2014-12-09": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 989
+  },
+  "2016-11-09": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 1473
+  },
+  "2018-06-15": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 1874
+  },
+  "2019-12-05": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 2245
+  },
+  "2020-11-10": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 2480
+  }
+ },
+ "params": {
+  "ratio_max": 0.95,
+  "rv_window": 21,
+  "sizing": "contango",
+  "full_at": 0.1
+ },
+ "runtime_s": 6.3
+}

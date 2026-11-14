@@ -49,7 +49,7 @@ import pandas as pd
 from numpy.lib.stride_tricks import sliding_window_view
 
 from .base import Strategy
-from .utils import ewm_vol, next_session
+from .utils import period_ends, ewm_vol, next_session
 
 ASSET_CLASSES = {
     "equity": ["SPY_X", "IWM_X", "QQQ", "EFA_X", "VGK_X", "EWJ", "EWG", "EWU", "EWC", "EWA",
@@ -111,7 +111,7 @@ def week_ends(cal: pd.DatetimeIndex) -> pd.DatetimeIndex:
 # --------------------------------------------------------------------------------------------- strategy
 class GPTrend(Strategy):
     name = "s01_gp_trend"
-    version = "v2"
+    version = "v3"
     universe = "multiasset"
     thesis = ("Asset-class trends persist (time-series momentum). A GP on each asset's vol-normalised price path gives "
               "the posterior drift and its uncertainty; Bayesian evidence (not in-sample Sharpe) weights trend horizons "
@@ -136,7 +136,9 @@ class GPTrend(Strategy):
                                               # ~25% of gross notional)
             "class_budget": True,             # divide by #active assets in its group (equity / fixed income /
                                               # commodity / FX) -> equal risk units per group
-            "adjust": 0.5,                    # fraction of the gap to the target closed each week (1 = full rebalance)
+            "adjust": 1.0,                    # v3: full rebalance (v1/v2: 0.5 of the gap each week)
+            "freq": "M",                      # v3: monthly rebalance (MOP 2012 convention); weekly signals partly
+                                              # reversed within days (lag+1 beat lag in every v1/v2 run)
         }
 
     # ---------------------------------------------------------------- data
@@ -166,7 +168,7 @@ class GPTrend(Strategy):
         groups = [[k for k, c in enumerate(models) if c["ell"] == ell] for ell in ells]
         Us = {ell: models[g[0]]["U"] for ell, g in zip(ells, groups)}
 
-        reb = week_ends(cal)
+        reb = week_ends(cal) if p.get("freq", "W") == "W" else period_ends(cal, p["freq"])
         pos = cal.get_indexer(reb)
         shape = (len(reb), len(p["assets"]))
         Z, M, S, MAXW = (np.full(shape, np.nan) for _ in range(4))

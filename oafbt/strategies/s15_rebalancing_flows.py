@@ -22,14 +22,16 @@ from .s10_turn_of_month import month_positions
 
 class RebalancingFlows(Strategy):
     name = "s15_rebalancing_flows"
-    version = "v1"
+    version = "v2"
     universe = "multiasset"
     calendar_timed = True     # trades scheduled in advance (MOC orders): lag+1 test not meaningful
     thesis = "Rebalancing to fixed stock/bond weights pushes the stock-bond spread against MTD performance at month end."
     inspired_by = "flows type (calendar), Macro deck's cross-asset (stock vs bond) framing"
 
     def default_params(self):
-        return {"stock": "SPY", "bond": "TLT", "z_months": 36, "z_cap": 2.0, "late": [-2, -1], "early": [1, 2]}
+        # v2: skip months with a weak rebalancing signal (|z| < 0.5) - they pay full costs for little expected edge
+        return {"stock": "SPY", "bond": "TLT", "z_months": 36, "z_cap": 2.0, "late": [-2, -1], "early": [1, 2],
+                "z_min": 0.5}
 
     def target_weights(self, ds):
         p = self.params
@@ -46,6 +48,7 @@ class RebalancingFlows(Strategy):
         rp_m = rp.dropna()
         sd = rp_m.rolling(p["z_months"], min_periods=24).std().shift(1)
         z = (rp_m / sd).clip(-p["z_cap"], p["z_cap"])
+        z = z.where(z.abs() >= p.get("z_min", 0.0), 0.0)
         zd = z.reindex(cal).ffill(limit=30)                        # latest month's z (known from day -4 on)
         vol = ewm_vol(X, halflife=63)
         late_on = fe.isin(p["late"]).shift(-2, fill_value=False).reindex(cal)     # decide 2 sessions ahead (lag 1)

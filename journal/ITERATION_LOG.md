@@ -76,3 +76,12 @@ survive costs after 2007; what works there is low-turnover, beta-neutral constru
 * s14 v2 betting-against-correlation (within vol quintiles): 0.28 -> 0.33 (2000-20: 0.20 -> 0.34).
 * Ranking score: the lag+1 test is skipped for calendar-timed strategies (s10, s15), whose trades are scheduled in
   advance and executed as market-on-close orders.
+
+## Round 3 results
+**Equal-risk combination: Sharpe 1.50 (2005-2020), 12.3%/yr, vol 8.2%, max DD -9.2%, subperiods 1.76/1.68/1.10.**
+* s15 v2 skip weak-signal months (|z| < 0.5): 0.38 -> 0.52, turnover 48x -> 28x (last third ~0: watch).
+* s01 v3 monthly full rebalance (MOP 2012 convention; weekly signals partly reversed within days): 0.32 -> 0.38,
+  subperiods 0.48/0.36/0.30.
+* s09 v2 contango-proportional sizing REJECTED (0.71 -> 0.49, DD -8.8% -> -20.5%): steep contango is the calm before
+  vol spikes (Feb 2018). Module reverted to v1; the trial stays in the ledger.
+* round_summary now reports the version implemented in each module (rejected later variants are ignored).
