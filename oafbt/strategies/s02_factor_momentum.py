@@ -3,6 +3,10 @@
 Thesis: returns of equity *factors* (size, value, profitability, investment, momentum; US and international)
 are positively autocorrelated - factor momentum (Ehsani & Linnainmaa 2022, Gupta & Kelly 2019, Arnott et al. 2023).
 Long factors whose trailing returns are positive, short those with negative trailing returns, risk-parity sized.
+
+v1: 37 factors (6 regions incl. overlapping Dev/NA, + ST/LT reversal), sign of 1/3/6/12m returns. Dev SR 1.06
+    (1975-2020) but 0.36 in 2004-2020: gross ~9%/yr eaten by 2.5% costs + 4.0% paper-portfolio drag.
+v2: see default_params.
 """
 import numpy as np
 import pandas as pd
@@ -34,14 +38,17 @@ def factor_specs(regions, include_reversal=True):
 
 class FactorMomentum(Strategy):
     name = "s02_factor_momentum"
-    version = "v1"
+    version = "v2"
     universe = "kf"
     thesis = "Factor returns are autocorrelated; time-series momentum across factors earns a premium."
     inspired_by = "cross-sectional momentum deck (momentum type), applied to factors"
 
     def default_params(self):
-        return {"regions": ["US", "Dev", "Eur", "Jpn", "APxJ", "NA"], "lookbacks_m": [1, 3, 6, 12],
-                "vol_halflife": 63, "include_reversal": True}
+        # v2 (diagnostics-driven): drop ST/LT reversal (paper-only, 800/100 bps drag, negative after 2004), drop
+        # the redundant aggregates 'Dev' and 'NA' (overlap US/Eur/Jpn/APxJ), and replace the sign-of-1..12m
+        # signal (flips often -> 23x turnover) by a continuous, vol-normalised trend score over 3/6/12 months.
+        return {"regions": ["US", "Eur", "Jpn", "APxJ"], "lookbacks_m": [3, 6, 12],
+                "vol_halflife": 63, "include_reversal": False, "signal": "continuous"}
 
     def _rets(self, ds):
         return kf_factor_returns(ds, factor_specs(self.params["regions"], self.params["include_reversal"]))
@@ -53,13 +60,17 @@ class FactorMomentum(Strategy):
         p = self.params
         R = self._rets(ds)
         lr = np.log1p(R.fillna(0.0)).where(R.notna())
+        vol = np.sqrt((R ** 2).ewm(halflife=p["vol_halflife"], min_periods=60).mean()) * np.sqrt(252)
         sig = 0
         for m in p["lookbacks_m"]:
             n = 21 * m
             tr = lr.rolling(n, min_periods=int(0.8 * n)).sum()
-            sig = sig + np.sign(tr)
+            if p.get("signal", "sign") == "continuous":
+                z = tr / (vol * np.sqrt(n / 252))          # trailing return in units of its own std
+                sig = sig + (z / 2).clip(-1, 1)
+            else:
+                sig = sig + np.sign(tr)
         sig = sig / len(p["lookbacks_m"])
-        vol = np.sqrt((R ** 2).ewm(halflife=p["vol_halflife"], min_periods=60).mean()) * np.sqrt(252)
         W = sig / vol
         W = W.where(R.notna() & vol.notna())
         reb = period_ends(R.index, "M")
