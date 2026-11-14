@@ -1,0 +1,36 @@
+{
+ "commit": "9f93ca5d276528c18869e8ac1e9ebac3f2018b6c",
+ "time": "2026-11-14T20:16:53+00:00",
+ "versions": {
+  "s01_gp_trend": "v4",
+  "s02_factor_momentum": "v2",
+  "s05_principal_portfolios": "v1",
+  "s08_ml_stock_ranker": "v2",
+  "s09_vrp_timing": "v1",
+  "s10_turn_of_month": "v4",
+  "s11_cross_asset_carry": "v3",
+  "s12_crypto_trend": "v1",
+  "s15_rebalancing_flows": "v3",
+  "s16_treasury_auctions": "v2"
+ },
+ "vault_fingerprint": {
+  "adjclose.parquet": "27567477dd11",
+  "close.parquet": "aa052150297f",
+  "fomc.parquet": "96530e40bcb5",
+  "groups.parquet": "ec255b85a372",
+  "high.parquet": "3ee51639717f",
+  "kf.pkl": "653e42e27213",
+  "low.parquet": "550d45c8fa6f",
+  "open.parquet": "a3631cda1ba3",
+  "printed.parquet": "36304e86335e",
+  "ret.parquet": "58b9984cb7f7",
+  "rf.parquet": "8ae47bd32393",
+  "sp500.parquet": "7b72545d751c",
+  "stale63.parquet": "63005cae544b",
+  "treasury_auctions.parquet": "e7b18ca05969",
+  "tri.parquet": "0adbde064050",
+  "volume.parquet": "33f5f5311bc1",
+  "xret.parquet": "4b2bd8fded2f"
+ },
+ "note": "One-shot holdout: strategies frozen at this commit; holdout = 2021-01-01 .. end of data."
+}
