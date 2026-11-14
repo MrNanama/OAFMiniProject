@@ -6,10 +6,19 @@ EXCL = re.compile(r"(UP|DOWN|BULL|BEAR)USDT$")
 STABLE = {"USDC", "TUSD", "BUSD", "FDUSD", "USDP", "DAI", "EUR", "GBP", "AUD", "USDS", "UST", "USDSB", "SUSD", "PAX", "AEUR", "XUSD", "USD1", "EURI", "BFUSD", "RLUSD", "PAXG", "WBTC", "WBETH"}
 ses = requests.Session()
 
+def _get(url, params=None, tries=6):
+    for a in range(tries):
+        try:
+            r = ses.get(url, params=params, timeout=60)
+            if r.status_code in (200, 404): return r
+        except Exception: pass
+        time.sleep(2 * (a + 1))
+    raise RuntimeError("failed " + url)
+
 def _list(prefix, delim="/"):
     out, marker = [], ""
     while True:
-        r = ses.get(S3, params=dict(delimiter=delim, prefix=prefix, marker=marker, **{"max-keys": 1000}), timeout=60); r.raise_for_status()
+        r = _get(S3, params=dict(delimiter=delim, prefix=prefix, marker=marker, **{"max-keys": 1000})); r.raise_for_status()
         txt = r.text; keys = re.findall(r"<Key>([^<]+)</Key>", txt) + re.findall(r"<Prefix>([^<]+)</Prefix>", txt.split("</Prefix>", 1)[1] if "</Prefix>" in txt else txt)
         out += keys; nm = re.search(r"<NextMarker>([^<]+)</NextMarker>", txt)
         if "<IsTruncated>true" in txt and nm: marker = nm.group(1)
@@ -28,15 +37,22 @@ def _read(content):
     df.index = pd.to_datetime(t, unit="ms").dt.normalize(); return df.drop(columns="t")
 
 def fetch_symbol(sym, retries=3):
+    os.makedirs("data/binance", exist_ok=True); f = f"data/binance/{sym}.pkl"
+    if os.path.exists(f): return pd.read_pickle(f)
+    d = _fetch_symbol(sym, retries)
+    if d is not None: d.to_pickle(f)
+    return d
+
+def _fetch_symbol(sym, retries=3):
     files = [k for k in _list(f"data/spot/monthly/klines/{sym}/1d/") if k.endswith(".zip")]
     months = {re.search(r"(\d{4}-\d{2})\.zip", k).group(1) for k in files}
     dfs = []
     def get(k):
         for a in range(retries):
             try:
-                r = ses.get(f"{CDN}/{k}", timeout=60)
+                r = _get(f"{CDN}/{k}")
                 if r.status_code == 200: return _read(r.content)
-            except Exception: time.sleep(1 + a)
+            except Exception: pass
         return None
     for k in files: dfs.append(get(k))
     last = max(months) if months else None                       # daily files for months after the last monthly file
@@ -46,7 +62,7 @@ def fetch_symbol(sym, retries=3):
     dfs = [d for d in dfs if d is not None]
     return pd.concat(dfs).sort_index().loc[lambda x: ~x.index.duplicated()] if dfs else None
 
-def fetch_all(out="data/binance.pkl", workers=24):
+def fetch_all(out="data/binance.pkl", workers=6):
     sy = symbols(); print("symbols:", len(sy), flush=True); res = {}
     with ThreadPoolExecutor(workers) as ex:
         for i, (s, d) in enumerate(zip(sy, ex.map(fetch_symbol, sy))):
