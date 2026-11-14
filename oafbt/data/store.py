@@ -374,6 +374,11 @@ def build():
         fomc = pd.read_csv(raw / "fomc.csv", parse_dates=["announce"])[["announce"]]
         fomc.to_parquet(VAULT / "fomc.parquet")
         fomc[fomc.announce <= pd.Timestamp(C.DEV_END) + pd.Timedelta(days=90)].to_parquet(DEV_DIR / "fomc.parquet")
+    if (raw / "treasury_auctions.csv").exists():
+        au = pd.read_csv(raw / "treasury_auctions.csv", parse_dates=["auction", "announce"])
+        au = au[["auction", "announce", "orig_term", "term", "type", "reopening"]].dropna(subset=["auction"])
+        au.to_parquet(VAULT / "treasury_auctions.parquet")
+        au[au.announce <= pd.Timestamp(C.DEV_END)].to_parquet(DEV_DIR / "treasury_auctions.parquet")
     pd.to_pickle(kfo, VAULT / "kf.pkl")
     pd.to_pickle({k: v.loc[:C.DEV_END] for k, v in kfo.items()}, DEV_DIR / "kf.pkl")
     report["dev_stock_cols"] = len(stocks_with_data - never_dev)
@@ -490,6 +495,14 @@ class DataStore:
         if self.end is not None:
             f = f[f <= self.end + pd.Timedelta(days=90)]
         return pd.DatetimeIndex(f)
+
+    def treasury_auctions(self) -> pd.DataFrame:
+        """Treasury note/bond auctions (TreasuryDirect) that had been ANNOUNCED by the data end: an auction is
+        known only from its announcement date (point-in-time)."""
+        a = pd.read_parquet(self.dir / "treasury_auctions.parquet")
+        if self.end is not None:
+            a = a[a.announce <= self.end]
+        return a.reset_index(drop=True)
 
     def kf(self, name: str) -> pd.DataFrame:
         d = self._kf()

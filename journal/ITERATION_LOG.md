@@ -85,3 +85,13 @@ survive costs after 2007; what works there is low-turnover, beta-neutral constru
 * s09 v2 contango-proportional sizing REJECTED (0.71 -> 0.49, DD -8.8% -> -20.5%): steep contango is the calm before
   vol spikes (Feb 2018). Module reverted to v1; the trial stays in the ledger.
 * round_summary now reports the version implemented in each module (rejected later variants are ignored).
+
+## Round 4 results
+**Equal-risk combination: Sharpe 1.62 (2005-2020), 12.2%/yr, vol 7.6%, max DD -7.9%, subperiods 1.71/1.70/1.46.**
+* s14 BAB/BAC retired (0.33 and decaying 0.68/0.25/0.08) -> NEW s16 Treasury auction cycle (SR 0.54, t=2.4,
+  subperiods 0.21/0.55/0.82 - strengthening, skew +1.4). Data: 1,700 note/bond auctions 1998-2026 from the
+  TreasuryDirect API with ANNOUNCEMENT dates; `ds.treasury_auctions()` only returns auctions announced by the data end,
+  and positions are decided >= 1 session after the announcement (the look-ahead harness enforces it).
+  Event study (logged): TLT drifts down into 10/20/30y auctions (~-34 bps over days -6..0) and recovers on days +1/+2
+  (+13.3 bps, t=2.7 on day +2). 5/7y auctions were excluded a priori (month-end week = s10's effect).
+* s08 v2 passed the full look-ahead check (10+ cuts).

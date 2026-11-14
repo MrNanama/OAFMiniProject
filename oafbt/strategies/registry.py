@@ -10,8 +10,8 @@ ACTIVE = [
     "s10_turn_of_month",
     "s11_cross_asset_carry",
     "s12_crypto_trend",
-    "s14_bab",
     "s15_rebalancing_flows",
+    "s16_treasury_auctions",
 ]
 RETIRED = [  # (name, round retired, reason)
     ("s06_curve_pca_rv", 1, "2%-vol ETF butterfly cannot pay ETF costs + short borrow at a 3x leverage cap (SR -0.49)"),
@@ -21,6 +21,7 @@ RETIRED = [  # (name, round retired, reason)
     ("s13_residual_momentum", 1, "candidate replacement rejected: SR -0.14 (2004-20)"),
     ("s07_industry_seasonality", 2, "real long-run effect (1975-2020 SR 0.37) but 0.06 since 2004: the target month "
                                     "changes monthly, forcing ~45x turnover (2.1%/yr); a rank buffer did not help"),
+    ("s14_bab", 4, "weakest and decaying (subperiods 0.68/0.25/0.08; BAB v1 0.28, BAC v2 0.33); replaced by s16"),
 ]
 
 

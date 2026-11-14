@@ -192,6 +192,35 @@ def fetch_kf():
     pd.to_pickle(out, RAW / "kf.pkl")
 
 
+# ----------------------------------------------------------------------------------------------- Treasury auctions
+def fetch_auctions(first_year=1998, last_year=2026):
+    """Treasury note/bond auctions with announcement dates (TreasuryDirect securities search API)."""
+    rows = []
+    for t in ["Note", "Bond"]:
+        for y in range(first_year, last_year + 1):
+            url = (f"https://www.treasurydirect.gov/TA_WS/securities/search?format=json&type={t}"
+                   f"&startDate={y}-01-01&endDate={y}-12-31")
+            try:
+                d = requests.get(url, headers=UA, timeout=60).json()
+            except Exception as e:
+                print("auctions", t, y, "failed", e)
+                continue
+            if not isinstance(d, list):
+                continue
+            for x in d:
+                rows.append({"type": t, "term": x.get("securityTerm"), "orig_term": x.get("originalSecurityTerm"),
+                             "auction": x.get("competitiveAuctionCloseDate") or x.get("auctionDate"),
+                             "announce": x.get("announcementDate"), "reopening": x.get("reopening"),
+                             "cusip": x.get("cusip")})
+            time.sleep(0.2)
+    df = pd.DataFrame(rows).drop_duplicates(subset=["cusip", "auction"])
+    df["auction"] = pd.to_datetime(df["auction"])
+    df["announce"] = pd.to_datetime(df["announce"])
+    df = df.dropna(subset=["auction"]).sort_values("auction")
+    df.to_csv(RAW / "treasury_auctions.csv", index=False)
+    print("[auctions]", len(df), df.auction.min().date(), "->", df.auction.max().date())
+
+
 # ----------------------------------------------------------------------------------------------- FOMC schedule
 MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
           "November", "December"]
@@ -251,7 +280,9 @@ def fetch_fomc(first_year=1994, last_hist_year=2020):
 
 
 if __name__ == "__main__":
-    what = sys.argv[1:] or ["yahoo", "kf", "sp500", "fomc"]
+    what = sys.argv[1:] or ["yahoo", "kf", "sp500", "fomc", "auctions"]
+    if "auctions" in what:
+        fetch_auctions()
     if "fomc" in what:
         fetch_fomc()
     if "kf" in what:

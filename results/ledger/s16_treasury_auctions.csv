@@ -1,0 +1,3 @@
+ts,strategy,version,tag,phash,params,sharpe,ann_ret,max_dd,turnover_yr,note
+2026-11-14T19:47:31+00:00,s16_treasury_auctions,research,dev,e6ae251f12,"{""exploratory_look"": 0}",,,,,event study IEF/TLT around coupon auctions 2003-2020
+2026-11-14T19:49:18+00:00,s16_treasury_auctions,v1,dev,c80ac100d8,"{""asset"": ""TLT"", ""terms"": [""10-Year"", ""20-Year"", ""30-Year""], ""pre"": 5, ""post"": [1, 2]}",0.5441478629176986,0.026581776180627244,-0.16021528115718664,37.45903643523679,"v1: short TLT pre 10/20/30y auctions (post-announcement), long days +1..+2"
