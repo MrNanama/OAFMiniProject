@@ -104,3 +104,17 @@ def kf_portfolio_returns(ds, table: str, prefix: str | None = None) -> pd.DataFr
     pre = prefix or f"KF:P:{table.split('_')[0]}"
     x.columns = [f"{pre}:{c}" for c in x.columns]
     return x
+
+
+# ------------------------------------------------------------------ published trading calendar
+def trading_calendar(ds, ahead: int = 40) -> pd.DatetimeIndex:
+    """ds.calendar extended by the next `ahead` NYSE sessions. The exchange publishes its holiday schedule in
+    advance, so a strategy may know which future dates are trading days (e.g. 'tomorrow is the first trading day
+    of the month') without any market data from those days. Use this instead of shifting the data calendar."""
+    import exchange_calendars as xc
+    cal = ds.calendar
+    end = cal[-1] + pd.Timedelta(days=int(ahead * 1.6) + 10)
+    xnys = xc.get_calendar("XNYS", start=str(cal[0].date()), end=str(max(end, cal[-1]).date()))
+    fut = xnys.sessions_in_range(cal[-1] + pd.Timedelta(days=1), end)[:ahead]
+    fut = pd.DatetimeIndex(fut).tz_localize(None) if getattr(fut, "tz", None) is not None else pd.DatetimeIndex(fut)
+    return cal.append(fut)

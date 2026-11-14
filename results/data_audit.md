@@ -71,3 +71,17 @@
 - SVXY: 2011-10-04 -> 2020-12-31, n=2327, ann.mean ret +34.9%
 - VIXM: 2011-01-04 -> 2020-12-31, n=2516, ann.mean ret -16.1%
 - VXZ: 2018-01-25 -> 2020-12-31, n=740, ann.mean ret +28.6%
+
+## Survivorship & placebo checks (stock universe = point-in-time S&P 500 members with Yahoo data)
+| portfolio | 2000-2020 ann. excess / SR | 2004-2020 ann. excess / SR |
+|---|---|---|
+| equal-weight eligible stocks (monthly, 5 bps) | 11.5% / 0.54 | 12.0% / 0.56 |
+| SPY | 6.7% / 0.34 | 9.7% / 0.51 |
+| RSP (real equal-weight S&P 500 ETF, incl. later-delisted names; 2003+) | - | 10.3% / 0.49 |
+
+=> survivorship bias of our stock universe is roughly **+1.7%/yr** for a long-only equal-weight book (2004-2020).
+Long-short stock strategies can be biased in either direction (missing delisted names are mostly acquisitions at a premium
+and failures); treat stock long-short Sharpe differences below ~0.2 as noise.
+
+Random monthly quintile long-short placebo (eligible stocks, 10% vol): Sharpe -0.51, -2.8%/yr (= costs and fees at
+~39x turnover), i.e. the engine produces no spurious edge.

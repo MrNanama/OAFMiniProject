@@ -1,0 +1,77 @@
+{
+ "strategy": "s10_turn_of_month",
+ "version": "v2",
+ "start": "2004-01-02",
+ "end": "2020-12-31",
+ "n_years": 16.98,
+ "sharpe": 0.819937991424474,
+ "ann_ret": 0.04251331178470766,
+ "ann_vol": 0.051849423040941804,
+ "max_dd": -0.09858171339339883,
+ "calmar": 0.4262599780990908,
+ "sortino": 1.1815404772722062,
+ "skew": -1.2054895251810067,
+ "turnover_yr": 50.39678141560475,
+ "cost_drag_yr": 0.010079356283120951,
+ "avg_gross_lev": 0.23631529259063083,
+ "beta_spy": 0.057399297425168645,
+ "corr_spy": 0.2128291034831648,
+ "t_hac": 3.2274739177180165,
+ "psr0": 0.9994070567766523,
+ "dsr": 0.9969610479792432,
+ "n_trials": 2,
+ "sr_subperiods": [
+  0.858,
+  1.186,
+  0.461
+ ],
+ "sr_ci_lo": 0.3265896470677721,
+ "sr_ci_hi": 1.3545229238938927,
+ "pos_years": "13/17",
+ "hit_monthly": 0.5980392156862745,
+ "n_assets": 3,
+ "sharpe_2004_2020": 0.819937991424474,
+ "sharpe_cost2x": 0.6258437350438616,
+ "sharpe_lag+1": 0.25973851578664575,
+ "lookahead_passed": true,
+ "lookahead_detail": {
+  "2008-06-30": {
+   "n_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 1490
+  },
+  "2014-03-31": {
+   "n_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 2937
+  },
+  "2019-09-30": {
+   "n_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 4322
+  }
+ },
+ "params": {
+  "bond_assets": [
+   "TLT",
+   "IEF"
+  ],
+  "bond_days_from_end": [
+   -2,
+   -1
+  ],
+  "equity_assets": [
+   "SPY"
+  ],
+  "equity_days_from_start": [
+   1,
+   2,
+   3
+  ],
+  "vol_halflife": 63
+ },
+ "runtime_s": 4.7
+}

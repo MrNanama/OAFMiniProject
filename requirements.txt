@@ -7,3 +7,4 @@ matplotlib>=3.9
 pyarrow>=16
 yfinance>=0.2.50
 requests>=2.31
+exchange_calendars>=4.5

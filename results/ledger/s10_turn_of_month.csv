@@ -1,3 +1,8 @@
 ts,strategy,version,tag,phash,params,sharpe,ann_ret,max_dd,turnover_yr,note
 2026-11-14T16:49:33+00:00,s10_turn_of_month,v1,dev,ffd3a25dc5,"{""asset"": ""SPY"", ""enter_day"": -2, ""exit_day"": 3}",0.22783841809259758,0.010970957310608237,-0.1076700458505172,18.33500216729499,reference v1
 2026-11-14T16:49:48+00:00,s10_turn_of_month,v1,dev,ffd3a25dc5,"{""asset"": ""SPY"", ""enter_day"": -2, ""exit_day"": 3}",0.22783841809259758,0.010970957310608237,-0.1076700458505172,18.33500216729499,reference v1 rerun
+2026-11-14T16:55:26+00:00,s10_turn_of_month,v2,dev,0ea19ed940,"{""bond_assets"": [""TLT"", ""IEF""], ""bond_days_from_end"": [-2, -1], ""equity_assets"": [""SPY""], ""equity_days_from_start"": [1, 2, 3], ""vol_halflife"": 63}",0.8182196303518803,0.04236395452358908,-0.09918337458688886,50.601171404500874,"v2: bonds days -2,-1 + SPY days +1..+3 (event-study driven, 3 exploratory looks)"
+2026-11-14T16:56:09+00:00,s10_turn_of_month,v2,dev,0ea19ed940,"{""bond_assets"": [""TLT"", ""IEF""], ""bond_days_from_end"": [-2, -1], ""equity_assets"": [""SPY""], ""equity_days_from_start"": [1, 2, 3], ""vol_halflife"": 63}",0.819937991424474,0.04251331178470766,-0.09858171339339883,50.39678141560475,"v2: same logic, published NYSE calendar (exchange_calendars) instead of data calendar"
+2026-11-14T16:56:28+00:00,s10_turn_of_month,research,dev,e6ae251f12,"{""exploratory_look"": 0}",,,,,event study: SPY/TLT/IEF mean return by day around month end 1993-2020
+2026-11-14T16:56:28+00:00,s10_turn_of_month,research,dev,24706cefed,"{""exploratory_look"": 1}",,,,,pre-holiday + half-sample split
+2026-11-14T16:56:28+00:00,s10_turn_of_month,research,dev,5bd41cdccb,"{""exploratory_look"": 2}",,,,,adjusted vs raw price check across 7 bond/equity ETFs 2004-2020
