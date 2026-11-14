@@ -1,3 +1,7 @@
 ts,strategy,version,tag,phash,params,sharpe,ann_ret,max_dd,turnover_yr,note
 2026-11-14T19:18:17+00:00,s09_vrp_timing,v1,dev,bbce4beaa7,"{""ratio_max"": 0.95, ""rv_window"": 21}",0.705495082556189,0.04455668620424065,-0.08790401125393477,3.91735891397172,v1 initial (spec)
 2026-11-14T19:42:01+00:00,s09_vrp_timing,v2,dev,d83126a725,"{""ratio_max"": 0.95, ""rv_window"": 21, ""sizing"": ""contango"", ""full_at"": 0.1}",0.4902707797524455,0.04392813474670955,-0.20509359054787857,5.559948443901964,"v2: contango-proportional sizing, strategy-level vol scaling"
+2026-11-14T19:50:26+00:00,s09_vrp_timing,v1,sens,538628bbef,"{""ratio_max"": 0.9, ""rv_window"": 21}",0.8208847965839353,0.04131089613654862,-0.09778519340091629,5.094692903627549,"sensitivity {""ratio_max"": 0.9}"
+2026-11-14T19:50:26+00:00,s09_vrp_timing,v1,sens,bc71d593e9,"{""ratio_max"": 1.0, ""rv_window"": 21}",0.7247491594187325,0.049645462263087636,-0.0927820812871184,3.0347155540295927,"sensitivity {""ratio_max"": 1.0}"
+2026-11-14T19:50:27+00:00,s09_vrp_timing,v1,sens,a85bc99c86,"{""ratio_max"": 0.95, ""rv_window"": 10}",0.7014229452674403,0.044476888585115844,-0.08354961131547689,3.674122470559665,"sensitivity {""rv_window"": 10}"
+2026-11-14T19:50:27+00:00,s09_vrp_timing,v1,sens,4c05f05f50,"{""ratio_max"": 0.95, ""rv_window"": 42}",0.6305837936613712,0.040975842688595776,-0.0981787086765854,3.7432012796980563,"sensitivity {""rv_window"": 42}"

@@ -1,0 +1,48 @@
+# Parameter sensitivity (dev, net)
+
+| strategy                 | override                                 |   SR_dev |   SR_04_20 |   maxDD |   turnover |
+|:-------------------------|:-----------------------------------------|---------:|-----------:|--------:|-----------:|
+| s12_crypto_trend         | (chosen)                                 |     1.76 |       1.76 |  -0.134 |        1   |
+| s12_crypto_trend         | {"lookbacks": [63, 126, 252]}            |     1.8  |       1.8  |  -0.113 |        0.9 |
+| s12_crypto_trend         | {"lookbacks": [21, 63]}                  |     1.74 |       1.74 |  -0.141 |        1.7 |
+| s12_crypto_trend         | {"lookbacks": [126, 252]}                |     1.75 |       1.75 |  -0.11  |        0.8 |
+| s12_crypto_trend         | {"lookbacks": [42, 84, 168, 336]}        |     1.53 |       1.53 |  -0.194 |        1   |
+| s10_turn_of_month        | (chosen)                                 |     0.95 |       0.95 |  -0.109 |       59.8 |
+| s10_turn_of_month        | {"equity_days_from_start": [1, 2]}       |     1.06 |       1.06 |  -0.077 |       59.8 |
+| s10_turn_of_month        | {"equity_days_from_start": [1, 2, 3, 4]} |     0.98 |       0.98 |  -0.091 |       59.7 |
+| s10_turn_of_month        | {"bond_days_from_end": [-1]}             |     0.79 |       0.79 |  -0.099 |       59.5 |
+| s10_turn_of_month        | {"bond_days_from_end": [-3, -2, -1]}     |     1.03 |       1.03 |  -0.102 |       59.9 |
+| s10_turn_of_month        | {"fomc_day": false}                      |     0.82 |       0.82 |  -0.098 |       50.4 |
+| s09_vrp_timing           | (chosen)                                 |     0.71 |       0.71 |  -0.088 |        3.9 |
+| s09_vrp_timing           | {"ratio_max": 0.9}                       |     0.82 |       0.82 |  -0.098 |        5.1 |
+| s09_vrp_timing           | {"ratio_max": 1.0}                       |     0.72 |       0.72 |  -0.093 |        3   |
+| s09_vrp_timing           | {"rv_window": 10}                        |     0.7  |       0.7  |  -0.084 |        3.7 |
+| s09_vrp_timing           | {"rv_window": 42}                        |     0.63 |       0.63 |  -0.098 |        3.7 |
+| s02_factor_momentum      | (chosen)                                 |     1.06 |       0.68 |  -0.308 |       15   |
+| s02_factor_momentum      | {"lookbacks_m": [6, 12]}                 |     1.06 |       0.66 |  -0.298 |       12.2 |
+| s02_factor_momentum      | {"lookbacks_m": [1, 3, 6, 12]}           |     1.05 |       0.6  |  -0.233 |       21   |
+| s02_factor_momentum      | {"lookbacks_m": [12]}                    |     1.08 |       0.64 |  -0.253 |       10.5 |
+| s02_factor_momentum      | {"vol_halflife": 126}                    |     1.01 |       0.62 |  -0.307 |       14.8 |
+| s05_principal_portfolios | (chosen)                                 |     0.63 |       0.56 |  -0.309 |       15.2 |
+| s05_principal_portfolios | {"k_pep": 2, "k_pap": 2}                 |     0.64 |       0.6  |  -0.313 |       14.4 |
+| s05_principal_portfolios | {"k_pep": 4, "k_pap": 4}                 |     0.65 |       0.42 |  -0.292 |       15.8 |
+| s05_principal_portfolios | {"sleeves": ["pap"]}                     |     0.12 |       0.18 |  -0.414 |       14.9 |
+| s05_principal_portfolios | {"sleeves": ["pep"]}                     |     0.59 |       0.43 |  -0.269 |       12.5 |
+| s16_treasury_auctions    | (chosen)                                 |     0.54 |       0.54 |  -0.16  |       37.5 |
+| s16_treasury_auctions    | {"pre": 3}                               |     0.56 |       0.56 |  -0.178 |       37.5 |
+| s16_treasury_auctions    | {"pre": 7}                               |     0.54 |       0.54 |  -0.16  |       37.5 |
+| s16_treasury_auctions    | {"post": [1, 2, 3]}                      |     0.52 |       0.52 |  -0.13  |       37.5 |
+| s16_treasury_auctions    | {"post": [2]}                            |     0.53 |       0.53 |  -0.137 |       37.4 |
+| s16_treasury_auctions    | {"pre": 0}                               |     0.57 |       0.57 |  -0.13  |       37.6 |
+| s15_rebalancing_flows    | (chosen)                                 |     0.52 |       0.52 |  -0.158 |       28.4 |
+| s15_rebalancing_flows    | {"z_min": 0.0}                           |     0.38 |       0.38 |  -0.168 |       48.6 |
+| s15_rebalancing_flows    | {"z_min": 1.0}                           |     0.58 |       0.58 |  -0.071 |       12.8 |
+| s15_rebalancing_flows    | {"late": [-3, -2, -1]}                   |     0.5  |       0.5  |  -0.144 |       38   |
+| s15_rebalancing_flows    | {"early": [1, 2, 3]}                     |     0.25 |       0.25 |  -0.232 |       28.5 |
+| s11_cross_asset_carry    | (chosen)                                 |     0.43 |       0.43 |  -0.344 |        6.3 |
+| s11_cross_asset_carry    | {"window": 126}                          |     0.36 |       0.36 |  -0.469 |        7.6 |
+| s11_cross_asset_carry    | {"window": 504}                          |     0.47 |       0.47 |  -0.37  |        4.1 |
+| s01_gp_trend             | (chosen)                                 |     0.38 |       0.38 |  -0.186 |       15.6 |
+| s01_gp_trend             | {"freq": "W", "adjust": 0.5}             |     0.32 |       0.32 |  -0.204 |       20   |
+| s01_gp_trend             | {"lengthscales": [126, 252]}             |     0.44 |       0.44 |  -0.182 |       12.7 |
+| s01_gp_trend             | {"z_scale": 1.0}                         |     0.38 |       0.38 |  -0.186 |       15.7 |

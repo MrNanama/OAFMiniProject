@@ -95,3 +95,10 @@ survive costs after 2007; what works there is low-turnover, beta-neutral constru
   Event study (logged): TLT drifts down into 10/20/30y auctions (~-34 bps over days -6..0) and recovers on days +1/+2
   (+13.3 bps, t=2.7 on day +2). 5/7y auctions were excluded a priori (month-end week = s10's effect).
 * s08 v2 passed the full look-ahead check (10+ cuts).
+
+## Round 5: robustness (parameter plateaus) - no parameter changes
+`results/sensitivity.md` (runs logged with tag 'sens', used for reporting only). SR 2004-2020 across nearby settings:
+s12 1.53-1.80 | s10 0.79-1.06 (FOMC sleeve +0.13) | s09 0.63-0.82 | s02 0.60-0.68 | s16 0.52-0.57 | s05 0.42-0.60
+(PEP alone 0.43, PAP alone 0.18 - the combination matters) | s15 0.25-0.58 (adding day +3 hurts; z filter 0/0.5/1 ->
+0.38/0.52/0.58) | s11 0.36-0.47 | s01 0.32-0.44. No knife-edge parameter; chosen values are not the best of their
+grids (no cherry-picking: e.g. s16 'post-auction leg only' 0.57 > chosen 0.54, s15 z_min=1 0.58 > chosen 0.52).
