@@ -170,3 +170,12 @@ Industry momentum disappears with 9 coarse sector ETFs (0.4 with 49 granular ind
 ## Verdict
 The long-run premia are statistically strong (t>10) but (1) alpha has shrunk to ~2.6%/yr and is insignificant in the last 17 years, (2) factor/industry portfolios are paper (underlying rebalancing costs unmodelled),
 (3) tradeable proxies are much weaker. This is a defensible low-beta diversified core, not a standalone alpha claim. Files: oaf/premia.py, 07_premia_sleeves.py, 08_premia_combo.py, 09_implementable_check.py, results/premia_*, combo_*, impl_pnl.pkl.
+
+---
+
+# Iteration 6 (allsam): Variance risk premium - implied-vol sizing/tilt and direct short-vol harvest - NEGATIVE
+
+Data (Yahoo): ^SP500TR (1988+), ^VIX (1990+), ^VIX3M (2006+), SVXY (2011+), ^IRX. Code: oaf/vrp.py, 10_vrp_timing.py, 11_short_vol.py.
+- VIX is a better variance forecast than realised vol (in-sample R2 0.62 vs 0.56 pre-2008; 0.54 vs 0.45 after). But VRP (VIX vs realised) as a RETURN predictor is unstable (2015-26 t=-2.7; ratio|rv21 t~2 in both eras in-sample).
+- Locked walk-forward equity timing (1998-2026, 21d purge, 1bp): B&H 0.43; vol-target(RV) 0.49; vol-target(VIX) 0.43; Markowitz const-mu 0.40; VRP-tilt 0.43. VIX sizing - RV sizing: -1.0%/yr (t=-1.5); tilt - vol-target: -0.5%/yr (t=-0.3). Better vol forecast did NOT translate into better Sharpe (same as iteration 2).
+- Direct short vol (SVXY, 2011-2026): Sharpe 0.52 always-short, 0.56 with VIX/VIX3M<0.95 filter; 1.0-1.1 until 2017 but ~0 since 2018; worst day -83% (Feb 2018); corr 0.51 with SPX, whose own Sharpe is 0.85 over the same window. Equity-crash insurance selling, not independent alpha.
