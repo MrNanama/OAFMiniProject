@@ -179,3 +179,29 @@ Data (Yahoo): ^SP500TR (1988+), ^VIX (1990+), ^VIX3M (2006+), SVXY (2011+), ^IRX
 - VIX is a better variance forecast than realised vol (in-sample R2 0.62 vs 0.56 pre-2008; 0.54 vs 0.45 after). But VRP (VIX vs realised) as a RETURN predictor is unstable (2015-26 t=-2.7; ratio|rv21 t~2 in both eras in-sample).
 - Locked walk-forward equity timing (1998-2026, 21d purge, 1bp): B&H 0.43; vol-target(RV) 0.49; vol-target(VIX) 0.43; Markowitz const-mu 0.40; VRP-tilt 0.43. VIX sizing - RV sizing: -1.0%/yr (t=-1.5); tilt - vol-target: -0.5%/yr (t=-0.3). Better vol forecast did NOT translate into better Sharpe (same as iteration 2).
 - Direct short vol (SVXY, 2011-2026): Sharpe 0.52 always-short, 0.56 with VIX/VIX3M<0.95 filter; 1.0-1.1 until 2017 but ~0 since 2018; worst day -83% (Feb 2018); corr 0.51 with SPX, whose own Sharpe is 0.85 over the same window. Equity-crash insurance selling, not independent alpha.
+
+---
+
+# Iteration 7 (allsam): Crypto cross-sectional momentum (market-neutral) - FIRST CANDIDATE, NOT PROVEN
+
+Why crypto: less efficient, less crowded than US large caps (iterations 1-6 found nothing there). Data: Yahoo, 59 coins from 2017-11 to 2026-11 (`data/crypto.pkl`, not committed).
+Universe = top-30 by lagged 30d dollar volume at each date (point-in-time liquidity filter), long top-5 / short bottom-5 by trailing k-day return, rebalanced weekly, 10 bps/side. Code: oaf/crypto.py, 12-14_*.py.
+
+## Results (net unless stated, Sharpe on daily data x sqrt(365))
+- Signal scan (8 signals tried): mom7 -0.10, **mom14 0.53 (gross 0.71)**, mom30 0.43, mom60 0.12, mom90 0.02; reversal 1/3/7d: -0.13/-0.58/-0.41. Reversal clearly negative; momentum positive in a hump at 14-30d.
+- Sensitivity grid (81 combos: universe 20/30/40, k 14/21/30, q 3/5/8, rebalance 3/7/14d): ALL positive net Sharpe (median 0.44, range 0.09-0.82); 96% positive in both halves. A plateau, not a spike.
+- Placebo (300 random long/short books, same structure): gross Sharpe mean 0.00, sd 0.37, p99 0.88; mom14 gross 0.71 -> p=0.027 (before deflating for ~8 signals tried).
+- Market-neutral: beta to BTC -0.04. Top-5 contributing coins = 66% of PnL; without them net Sharpe 0.35 (base 0.53).
+- Walk-forward lookback choice (each Jan, best trailing-2y Sharpe among 7/14/30/60): net Sharpe 0.46 (2020-26) vs fixed mom14 0.60, mom30 0.49; BTC buy&hold 0.84.
+- Blend 14d+30d: Sharpe 0.53 (2018-21 0.80, 2022-26 0.24). Bootstrap 95% CI [-0.13, 1.18]. Short funding 0/5/10/20%/yr on full short notional (vol-targeted version): Sharpe 0.77/0.68/0.59/0.42.
+- Vol-targeted to 20% (lagged 60d vol, cap 3x): 16.9% ann (13.0% after 10% funding), maxDD -26%, avg leverage 0.39.
+- Year by year (vol-targeted, 10% funding): 2018 -0.23, 2019 1.33, 2020 0.59, 2021 1.55, 2022 -0.24, 2023 0.22, 2024 1.32, 2025 1.41, **2026 YTD -1.31 (-23.5%)**.
+
+## Honest verdict
+Best lead so far: a structurally different, market-neutral, parameter-robust signal with a sensible hump shape and a placebo p-value of ~0.03 (before multiple-testing correction), consistent with the published crypto-momentum literature (1-4 week horizon).
+NOT proven: only ~8 years; CI includes zero; **coin list is hindsight-selected (survivorship, direction ambiguous for momentum)**; performance is concentrated in a few coins; the most recent year is a large loss
+(possible regime change/crowding); shorting requires perps (funding/liquidity) and capacity is small. The 2026 drawdown is the first thing to understand before trusting it.
+
+## Next
+(1) Point-in-time universe (historical market-cap snapshots incl. dead coins) - requires data we cannot reach yet; (2) diagnose 2026 (is it momentum crash on rebound? beta? one coin?);
+(3) add orthogonal crypto signals (size, volume-shock, BTC-relative residual momentum); (4) combine with the slow premia core from iteration 5 as a diversifier.
