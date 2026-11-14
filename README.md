@@ -36,8 +36,8 @@ Holdout file: `results/holdout/holdout.md` (incl. holdout correlations: max |rho
 s05) end 2026-09 (data availability).
 
 ### Honest verdict
-* **The combination is the product.** Single-strategy Sharpe ratios decayed from 0.73 (dev mean) to 0.31 (holdout
-  mean), roughly the 30-60% haircut the literature and our trial counts predict. Diversifying ten low-correlated
+* **The combination is the product.** Single-strategy Sharpe ratios decayed from 0.67 (dev mean, 2004-2020; 0.73
+  over each strategy's full dev window) to 0.31 (holdout mean), roughly the 30-60% haircut the literature and our trial counts predict. Diversifying ten low-correlated
   streams kept the combined Sharpe at **0.89** with a -8% drawdown, positive in every holdout year, versus SPY's 0.68
   with -25%.
 * **What held up**: rebalancing flows (improved out of sample, consistent with the growth of rebalancing AUM), factor
@@ -61,6 +61,10 @@ s05) end 2026-09 (data availability).
 **Lesson:** in S&P 500 large caps, simple price/volume signals did not survive costs after 2007 (consistent with the
 earlier agent's findings on this repo). What survived are low-turnover or structurally motivated premia: flows,
 supply, carry, the variance risk premium and factor momentum.
+
+## Presentation
+`presentation/OAF_Rebalancing_Flows.pptx`: a 16-slide OAF-style pitch of the best out-of-sample strategy, s15
+Rebalancing Flows (mechanism, evidence in development and holdout, rules, testing discipline, robustness, risks).
 
 ## Data (all real, downloaded by `python -m oafbt.data.fetch`, not committed)
 | source | content | use |
