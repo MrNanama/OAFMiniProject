@@ -111,12 +111,14 @@ def week_ends(cal: pd.DatetimeIndex) -> pd.DatetimeIndex:
 # --------------------------------------------------------------------------------------------- strategy
 class GPTrend(Strategy):
     name = "s01_gp_trend"
-    version = "v3"
+    version = "v4"
     universe = "multiasset"
     thesis = ("Asset-class trends persist (time-series momentum). A GP on each asset's vol-normalised price path gives "
               "the posterior drift and its uncertainty; Bayesian evidence (not in-sample Sharpe) weights trend horizons "
               "and drift amplitudes per asset and date, shrinking weak/choppy trends and keeping persistent ones.")
     inspired_by = "Bayesian Quadrature deck (GP machinery / robust ensembling) + momentum type"
+    # v4 (final-review fix): no shorts of mutual-fund proxy segments of _X twins; gold traded via GLD only
+    # (GLD_X's pre-2004-11 segment is the GC=F future, which is signal-only)
 
     def default_params(self):
         return {
@@ -238,7 +240,28 @@ class GPTrend(Strategy):
             W = pd.DataFrame(A, index=W.index, columns=W.columns)
         out = pd.DataFrame(np.nan, index=R.index, columns=W.columns)
         out.loc[W.index] = W.to_numpy()
-        return out
+        return self._investable(ds, out)
+
+    @staticmethod
+    def _investable(ds, W: pd.DataFrame) -> pd.DataFrame:
+        """v4 (final-review fix): _X twins are only investable as their real proxy allows. Before an ETF's first
+        print its twin is an index mutual fund (long-only: no shorts) - except GLD_X, whose pre-GLD segment is the
+        GC=F front-month future (signal-only): trade GLD itself and stay flat in gold before GLD exists."""
+        W = W.copy()
+        reb = W.notna().any(axis=1)
+        for c in list(W.columns):
+            if not c.endswith("_X"):
+                continue
+            etf = c[:-2]
+            first = ds.xret([etf])[etf].first_valid_index()
+            first = W.index[-1] + pd.Timedelta(days=1) if first is None else first   # ETF not listed yet
+            pre = (W.index < first) & reb.to_numpy()
+            if c == "GLD_X":
+                W.loc[pre, c] = 0.0
+                W = W.rename(columns={c: etf}) if etf not in W.columns else W
+            else:
+                W.loc[pre, c] = W.loc[pre, c].clip(lower=0.0)
+        return W
 
 
 STRATEGY = GPTrend

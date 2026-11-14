@@ -3,8 +3,12 @@
 Thesis: crypto assets have strong return autocorrelation at 1-12 month horizons (Liu & Tsyvinski 2021 'Risks and
 Returns of Cryptocurrency'; Liu, Tsyvinski & Wu 2022): investor attention and slow adoption make trends persist.
 v1: BTC and ETH (Yahoo; daily close at 00:00 UTC, delayed one session in the data build so it is never ahead of
-the NYSE close). Long-only (shorting crypto was costly/unavailable for most of the sample): weight = average over
-lookbacks {21, 63, 126, 252} days of 1[trailing return > 0]; each asset sized inverse to its vol; weekly rebalance.
+the NYSE close). Long-only (shorting crypto was costly/unavailable for most of the sample). Signal per asset =
+average over lookbacks {21, 63, 126, 252} days of 1[trailing return > 0], divided by the asset's vol; weekly.
+EFFECTIVE RULE (final-review clarification, no code change): the engine normalises each rebalance row and scales it
+to 10% ex-ante vol, so the signal STRENGTH only sets the BTC/ETH split; the book is fully invested (at 10% vol)
+whenever at least one lookback is positive and flat when all four are negative. A graded-exposure variant
+(vol_mode='strategy') scored lower (dev SR 1.33 vs 1.76) and was NOT adopted after the fact; it is logged.
 """
 import numpy as np
 import pandas as pd

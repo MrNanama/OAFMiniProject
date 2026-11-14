@@ -28,7 +28,7 @@ EQ = ["SPY", "EWJ", "EWG", "EWU", "EWC", "EWA", "EWH", "EWS", "EWT", "EWY", "EWZ
 
 class CrossAssetCarry(Strategy):
     name = "s11_cross_asset_carry"
-    version = "v2"
+    version = "v3"
     universe = "multiasset"
     thesis = "Carry predicts returns across asset classes; carry is inferred from ETF vs futures/spot/dividend data."
     inspired_by = "Macro Momentum deck (cross-asset macro type) - new premium: carry"
@@ -78,7 +78,12 @@ class CrossAssetCarry(Strategy):
             r = c.rank(axis=1)
             r = r.sub(r.mean(axis=1), axis=0)
             w = (r / vol[c.columns])
-            w = w.div(w.abs().sum(axis=1).replace(0, np.nan), axis=0)       # unit gross per class
+            # v3 (final-review fix): make each class book DOLLAR-NEUTRAL after vol scaling (v1/v2 demeaned ranks
+            # before dividing by vol, leaving a +17% average net-long tilt towards low-vol, high-carry gold/copper)
+            lg, sh = w.clip(lower=0), w.clip(upper=0)
+            lg = lg.div(lg.sum(axis=1).replace(0, np.nan), axis=0)
+            sh = sh.div(-sh.sum(axis=1).replace(0, np.nan), axis=0)
+            w = (lg.fillna(0.0) + sh.fillna(0.0)) / 2.0                         # unit gross, net zero
             # equal RISK per class: divide by the class book's own trailing vol
             book = (w.shift(1) * X[c.columns]).sum(axis=1)
             bvol = book.rolling(252, min_periods=63).std() * np.sqrt(252)
