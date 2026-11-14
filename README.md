@@ -205,3 +205,41 @@ NOT proven: only ~8 years; CI includes zero; **coin list is hindsight-selected (
 ## Next
 (1) Point-in-time universe (historical market-cap snapshots incl. dead coins) - requires data we cannot reach yet; (2) diagnose 2026 (is it momentum crash on rebound? beta? one coin?);
 (3) add orthogonal crypto signals (size, volume-shock, BTC-relative residual momentum); (4) combine with the slow premia core from iteration 5 as a diversifier.
+
+---
+
+# Iteration 8 (allsam): Crypto momentum on a SURVIVORSHIP-FREE point-in-time universe + crash fix + combination
+
+Data: Binance public data (data.binance.vision, host approved for the session): 690 USDT spot pairs 2017-08..2026-11, **194 delisted (28%)**, incl. LUNA -100%, FTT -75%, OM -84%.
+`python -m oaf.binance` downloads (resumable cache in data/binance/, gitignored), `oaf.binance.load()` cleans (KLAY->KAIA migration rows dropped). Universe each day = top-30 by lagged 30d USDT volume with >=90d history;
+12% of universe-days are coins later delisted. Costs 10 bps/side + 10%/yr funding on short notional. Code: oaf/crypto.py (weights/pnl/beta_neutral/state_scale/vol_target), 15-18_*.py.
+
+## 1. Survivorship fixed -> signal got BETTER, not worse (long/short top5/bottom5, weekly)
+mom14 net Sharpe **0.70** (gross 0.86; Yahoo survivor list was 0.53). Hump at 7-21d: mom7 0.37, mom14 0.70, mom21 0.37, mom30 0.26; mom60/90 negative after 2022; reversal 1/3/7d -0.72/-0.70/-0.81. Beta to BTC -0.02.
+**Decay:** 2018-21 Sharpe 1.19 -> 2022-26 0.32. Grid of 81 params: 95% positive, but only 42% positive in both halves. Years 2019, 2022, 2023 negative.
+
+## 2. 2026 diagnosis (Yahoo version) and crash fixes (PIT, mom14, all at 2x gross, 10bp, 10% funding)
+2026 loss = momentum crash: -40% in Jan 2026 alone; avg PnL on market-rebound days after >25% drawdown -1.05%/day vs +0.12% all days (n=262); both legs lost, spread across many coins.
+| Variant | Sharpe | 2018-21 | 2022-26 | maxDD |
+|---|---|---|---|---|
+| base | 0.55 | 0.98 | 0.19 | -93% |
+| + beta-neutral legs | 0.49 | 0.92 | 0.10 | -93% |
+| + bear-state x0.5 (EW-universe DD<-25% vs 90d peak) | 0.79 | 1.08 | 0.49 | -84% |
+| + vol-target 20% | 0.58 | 0.93 | 0.29 | -41% |
+| beta-neutral + bear + vol-target | 0.64 | 0.99 | 0.35 | -48% |
+Bear-state rule (specified once before running): grid of 18 params median 0.70, min 0.49, 61% beat base in both halves; vs 300 random exposure cuts with matched frequency/persistence:
+real gain +0.23 Sharpe vs placebo mean -0.05 (sd 0.09), p<0.001. NOTE the rule is active ~50% of days (dying alts drag the EW index down), i.e. it halves exposure half the time.
+
+## 3. Other signals tried (all excluded from the claim)
+BTC-residual mom14 0.73 (corr 0.92 with mom14: same signal). Small-size -0.37, volume shock -0.70 (alone).
+EXCLUDED: low idio-vol (0.95 but worst month -128%, maxDD -94%: uncapped short squeezes, untradeable); mom14+low-volume-shock composite (0.93): sign chosen after seeing the data AND overlaps the volume-filters deck.
+
+## 4. Final book = mom14 + bear-state + vol-target 20% (lagged 60d vol, cap 3x)
+Sharpe **0.70** (bootstrap 95% CI [0.11, 1.28]), 15.7%/yr at 22.4% vol, maxDD -41%, worst day -7.6%, worst month -9%. Years: 2018 1.04, 2019 0.20, 2020 0.72, 2021 2.35, 2022 -1.14, 2023 -0.39, 2024 0.65, 2025 2.46, 2026 0.69.
+PSR(0)=0.98 but **DSR=0.62 (N=15 trials)** - NOT statistically significant after multiple-testing correction.
+Combination with the iteration-5 slow premia core (weekly, 2018-2026-09, risk parity 50/50): corr -0.04; Sharpe crypto 0.71, slow3 0.56, **combined 0.92** (2022+: 0.40 / 0.48 / 0.61). slow3 is paper (Ken French portfolios) so the combined number is optimistic.
+
+## Verdict
+Best result so far and the only one where an edge survives a survivorship-free test, a placebo, and a parameter grid. Still NOT proven alpha: DSR 0.62; weaker since 2022 (0.32 raw); 2022-23 drawdown years; ~15 trials;
+real-world frictions (shorting via perps, altcoin slippage beyond 10bp, exchange/counterparty risk, capacity of a few $M) are not modelled; spot prices stand in for perp prices; the bear-state rule was tuned only once but its thresholds are arbitrary.
+Next: out-of-sample forward tracking (live paper-trade from today), perp funding/price data from Binance (data.binance.vision has futures funding rates), per-coin liquidity-aware slippage model, and test on Bybit/other venues.

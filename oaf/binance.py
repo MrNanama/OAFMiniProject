@@ -73,3 +73,10 @@ def fetch_all(out="data/binance.pkl", workers=6):
 if __name__ == "__main__":
     C, QV = fetch_all(); print(C.shape, C.index[0].date(), C.index[-1].date())
     last = C.apply(lambda s: s.last_valid_index()); print("coins whose data ends >30d before end (delisted):", int((last < C.index[-30]).sum()), "of", C.shape[1])
+
+def load(path="data/binance.pkl"):
+    """Clean loader: drops out-of-range timestamps (KLAY->KAIA migration rows), returns close, quote-volume (USDT)."""
+    o = pd.read_pickle(path); lo, hi = pd.Timestamp("2017-07-01"), pd.Timestamp("2026-12-31")
+    C = o["close"]; C = C[(C.index >= lo) & (C.index <= hi)]; Q = o["qvol"].reindex(C.index)
+    C.index = pd.DatetimeIndex(C.index).astype("datetime64[ns]"); Q.index = C.index
+    return C, Q
