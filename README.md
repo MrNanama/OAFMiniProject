@@ -74,3 +74,43 @@ Reported as a negative result rather than tuned until it works (that would be ov
    (b) 90-year Fama-French monthly + credit-spread regime study with a true 1926-1965 / 1966-2018 out-of-sample split.
 
 Files: oaf/corr.py, 04_corr_timing.py, results/corr_*.{pkl,csv}
+
+---
+
+# Iteration 3 (allsam): "Who moved the price?" Overnight-gap drift on a broad universe - NEGATIVE RESULT
+
+## Data (new: network opened to Yahoo/Ken French/Stooq; FRED still fails)
+`python -m oaf.fetch` pulls adjusted OHLCV for 510 US large caps (412 with full history), 2005-01 to 2026-11 (~5,400 days). Not committed (data/ is gitignored).
+Hygiene: open always inside [low, high]; 0.6% zero gaps; 33 extreme obs. **Survivorship:** ticker list is from memory and skews to survivors (49 of 559 tickers returned nothing).
+Biggest bias risk is for reversal-of-losers; irrelevant for the conclusion below because the result is negative anyway.
+
+## Thesis
+Overnight return = information (news); intraday return = order flow. Flow-driven moves should reverse, news-driven moves should continue. Classic 1-day reversal fails
+on costs (iteration 1: -1.9 Sharpe) because it lumps both; separating them should isolate a tradeable piece.
+
+## Evidence
+- Next-day return by intraday-z decile: weakly monotone reversal, D1-D10 spread only ~4.4 bps/day vs ~10 bps round-trip cost. Dead on costs.
+- Overnight-z: not linear (U-shaped deciles); only extreme drops continue (-10.7 bps next day, t=-4.0), i.e. news drift.
+- Gap-and-go vs gap-and-fade does NOT discriminate: both continue (fade even more). The news/flow split as framed is not supported.
+- Event t-stats (2-5) are inflated: events cluster on crash days and are not independent.
+
+## Locked backtest (market-neutral vs EW basket, 5-day hold, 5 bps/side, 2006-2026)
+| Variant | Net Sharpe | Gross Sharpe | Gross 2006-15 | Gross 2016-26 |
+|---|---|---|---|---|
+| all gaps |z|>2 | -0.15 | 0.16 | 0.51 | 0.03 |
+| gap & fade | -0.05 | 0.30 | 0.41 | 0.23 |
+| gap & go | -0.18 | 0.00 | 0.29 | -0.11 |
+| down gaps only | -0.04 | 0.25 | 0.44 | 0.12 |
+
+All-gaps: 95% CI [-0.46, 0.20], DSR(N=10 trials) 0.01. Breakeven cost ~2.5 bps/side (Sharpe 0.00); hold 2/10/20d: -0.14/-0.09/+0.02. 2024-26 is negative even gross.
+
+## Verdict
+No alpha. The gap-drift effect decayed (gross Sharpe 0.5 -> ~0 across the two halves), is smaller than costs, and the thesis mechanism is not supported.
+Short-horizon single-signal price/volume effects on liquid US stocks look arbitraged away; iterations 1-3 all point the same way.
+
+## Suggested iteration 4
+Stop mining short-horizon price signals. Options: (a) slower, diversified, cost-insensitive premia built on the new broad data (residual momentum, quality/low-vol, vol-managed factor combos) with
+a survivorship haircut; (b) use Ken French factors (daily, incl. momentum) for factor timing with long out-of-sample history; (c) alternative-data-like cross-asset signals via Yahoo
+(futures, rates, FX ETFs) where survivorship is not an issue.
+
+Files: oaf/universe.py, oaf/fetch.py, oaf/gap.py, 05_gap_drift.py, results/gap_*.
