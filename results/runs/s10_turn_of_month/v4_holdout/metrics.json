@@ -1,0 +1,70 @@
+{
+ "start": "2021-01-04",
+ "end": "2026-11-13",
+ "n_years": 5.85,
+ "ann_ret": 0.015983613883061926,
+ "cagr": 0.01460152281916316,
+ "ann_vol": 0.054502451668051594,
+ "sharpe": 0.2932641265462788,
+ "sortino": 0.4069727694892478,
+ "max_dd": -0.09418053705459117,
+ "calmar": 0.15503758287871597,
+ "max_dd_days": 575,
+ "skew": -0.860801845416777,
+ "kurt": 16.755872329944758,
+ "hit_daily": 0.14043419267299864,
+ "hit_monthly": 0.5633802816901409,
+ "worst_day": -0.0310478475683578,
+ "worst_month": -0.06333144062872997,
+ "best_month": 0.030856494238739485,
+ "pos_years": "4/6",
+ "t_hac": 0.7682748674901992,
+ "psr0": 0.7589403226406098,
+ "dsr": 0.22873408643842913,
+ "n_trials": 8,
+ "sr_subperiods": [
+  0.572,
+  0.076,
+  0.205
+ ],
+ "sr_ci_lo": -0.4620183383681235,
+ "sr_ci_hi": 1.0236638908902482,
+ "turnover_yr": 53.65720527078615,
+ "cost_drag_yr": 0.01073144105415723,
+ "fee_drag_yr": 0.00011350753620222192,
+ "total_drag_yr": 0.010844948590359452,
+ "n_trials_program": 51,
+ "dsr_program": 0.03717607368027729,
+ "avg_gross_lev": 0.22825617356791406,
+ "beta_spy": 0.1158501659265546,
+ "corr_spy": 0.35460529101079963,
+ "alpha_t_hac": 0.13780248178083132,
+ "strategy": "s10_turn_of_month",
+ "version": "v4",
+ "universe": "multiasset",
+ "cost_mult": 1.0,
+ "lag": 1,
+ "n_assets": 3,
+ "ruined": "None",
+ "vol_mode": "row",
+ "params": {
+  "bond_assets": [
+   "TLT",
+   "IEF"
+  ],
+  "bond_days_from_end": [
+   -2,
+   -1
+  ],
+  "equity_assets": [
+   "SPY"
+  ],
+  "equity_days_from_start": [
+   1,
+   2,
+   3
+  ],
+  "vol_halflife": 63,
+  "fomc_day": true
+ }
+}

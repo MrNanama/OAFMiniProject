@@ -115,3 +115,12 @@ Fixed (all re-run and logged):
 | s12 | trend-strength sizing is normalised away in row mode (effective rule: invested if any lookback > 0) | docstring corrected; graded variant logged (1.46), not adopted | 1.76 |
 | s08 | headline leans on 2000-04 (thin survivor universe); 2005-20 SR 0.23 | reported, no change | 0.33 |
 **Final dev equal-risk combination: Sharpe 1.60 (2005-2020), 11.9%/yr, vol 7.5%, max DD -7.5%, 15/16 positive years.**
+
+## FREEZE + one-shot holdout (2021-01-01 -> 2026-11-13)
+Frozen at code commit 9f93ca5 (`FROZEN`, versions recorded). The holdout was run exactly once
+(`scripts/run_holdout.py`, `results/holdout/holdout.md`); nothing was changed afterwards.
+* Equal-risk combination: dev 1.60 -> **holdout 0.89** (6.4%/yr, vol 7.2%, max DD -8.2%, t 2.22, 6/6 positive years);
+  SPY over the same period 0.68 (max DD -25.3%).
+* Per strategy (dev -> holdout): s15 0.52 -> 1.03, s02 0.68 -> 0.54, s05 0.56 -> 0.53, s12 1.76 -> 0.52,
+  s11 0.28 -> 0.30, s10 0.93 -> 0.29, s09 0.71 -> 0.21, s01 0.41 -> 0.08, s16 0.54 -> -0.17, s08 0.33 -> -0.21.
+* Mean single-strategy Sharpe 0.73 -> 0.31 (typical post-selection decay); diversification preserved the combination.
