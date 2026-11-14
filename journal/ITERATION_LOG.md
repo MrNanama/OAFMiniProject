@@ -11,3 +11,7 @@ Ranking score = 0.5*SR(2004-2020) + 0.5*min(SR 2004-2020, SR at 2x cost, SR with
 * s10 turn-of-month v1 (SPY days -1..+3, SR 0.23) -> v2 month-turn flows (Treasuries days -2..-1 for index
   extension + SPY days +1..+3): SR 0.82. The day windows came from a dev-period event study (3 exploratory looks,
   logged as trials); the Treasury effect holds in raw prices for 6 bond ETFs independently (t = 2.4 to 6.1).
+* Research note (s10, logged as exploratory trial): SPY close-to-close return on scheduled FOMC announcement days
+  = +21 bps (t=2.1) in 1994-2007 and +35 bps (t=2.8) in 2008-2020 (other days 1-5 bps); day -1/+1 not stable across
+  halves. Candidate sleeve for s10 v3: long SPY over announcement days (schedule published a year ahead, scraped from
+  federalreserve.gov -> `ds.fomc_dates()`).

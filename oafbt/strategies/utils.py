@@ -7,11 +7,18 @@ import pandas as pd
 
 # ------------------------------------------------------------------ schedules
 def period_ends(index: pd.DatetimeIndex, freq: str = "M") -> pd.DatetimeIndex:
-    """last trading day of each period in `index` (freq 'W', 'M', 'Q'). The final (possibly incomplete) period's
-    last available day is included - it is a real trading day, so no look-ahead."""
+    """last trading day of each period in `index` (freq 'W', 'M', 'Q'). The final period is kept only if its last
+    date is a TRUE period end according to the published NYSE calendar (otherwise truncating the data would create
+    a phantom rebalance on the last available day - which the look-ahead check would rightly flag)."""
+    if len(index) == 0:
+        return pd.DatetimeIndex([])
     s = pd.Series(index, index=index)
-    key = index.to_period(freq)
-    return pd.DatetimeIndex(s.groupby(key).max().values)
+    ends = s.groupby(index.to_period(freq)).max()
+    last = pd.Timestamp(ends.iloc[-1])
+    nxt = next_session(last)
+    if nxt is not None and nxt.to_period(freq) == last.to_period(freq):
+        ends = ends.iloc[:-1]
+    return pd.DatetimeIndex(ends.values)
 
 
 def keep_rows(W: pd.DataFrame, dates) -> pd.DataFrame:
@@ -107,14 +114,31 @@ def kf_portfolio_returns(ds, table: str, prefix: str | None = None) -> pd.DataFr
 
 
 # ------------------------------------------------------------------ published trading calendar
+_XNYS = None
+
+
+def nyse_sessions() -> pd.DatetimeIndex:
+    """all NYSE sessions 1985-2030 from the exchange's published schedule (cached)"""
+    global _XNYS
+    if _XNYS is None:
+        import exchange_calendars as xc
+        cal = xc.get_calendar("XNYS", start="1985-01-01", end="2030-12-31")
+        ses = pd.DatetimeIndex(cal.sessions)
+        _XNYS = ses.tz_localize(None) if ses.tz is not None else ses
+    return _XNYS
+
+
+def next_session(d) -> pd.Timestamp | None:
+    ses = nyse_sessions()
+    i = ses.searchsorted(pd.Timestamp(d), side="right")
+    return ses[i] if i < len(ses) else None
+
+
 def trading_calendar(ds, ahead: int = 40) -> pd.DatetimeIndex:
     """ds.calendar extended by the next `ahead` NYSE sessions. The exchange publishes its holiday schedule in
     advance, so a strategy may know which future dates are trading days (e.g. 'tomorrow is the first trading day
     of the month') without any market data from those days. Use this instead of shifting the data calendar."""
-    import exchange_calendars as xc
     cal = ds.calendar
-    end = cal[-1] + pd.Timedelta(days=int(ahead * 1.6) + 10)
-    xnys = xc.get_calendar("XNYS", start=str(cal[0].date()), end=str(max(end, cal[-1]).date()))
-    fut = xnys.sessions_in_range(cal[-1] + pd.Timedelta(days=1), end)[:ahead]
-    fut = pd.DatetimeIndex(fut).tz_localize(None) if getattr(fut, "tz", None) is not None else pd.DatetimeIndex(fut)
-    return cal.append(fut)
+    ses = nyse_sessions()
+    i = ses.searchsorted(cal[-1], side="right")
+    return cal.append(ses[i:i + ahead])

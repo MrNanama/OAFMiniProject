@@ -18,8 +18,8 @@
  "corr_spy": -0.03727189222414524,
  "t_hac": 5.443679923684957,
  "psr0": 0.9999999999988164,
- "dsr": 0.9999999999988164,
- "n_trials": 1,
+ "dsr": 0.9999999999596706,
+ "n_trials": 2,
  "sr_subperiods": [
   1.018,
   1.404,
@@ -70,5 +70,5 @@
   "include_reversal": false,
   "signal": "continuous"
  },
- "runtime_s": 5.0
+ "runtime_s": 7.5
 }
