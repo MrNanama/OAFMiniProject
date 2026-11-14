@@ -37,6 +37,7 @@ def run(strategy, ds: DataStore | None = None, holdout: bool = False, save: bool
     lev_cap = strategy.lev_cap or C.LEV_CAP[strategy.universe]
     res = backtest(W, X, cost_bps=meta["cost_bps"] * cost_mult, borrow_bps_yr=meta["borrow_bps"],
                    funded=meta["funded"], lag=strategy.lag if lag is None else lag,
+                   hold_bps_yr=meta["hold_bps"] if "hold_bps" in meta else 0.0,
                    vol_target=strategy.vol_target, vol_window=strategy.vol_window,
                    vol_halflife=strategy.vol_halflife, lev_cap=lev_cap, keep_held=keep_held)
     if holdout:

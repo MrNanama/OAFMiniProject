@@ -44,6 +44,8 @@ BORROW_BPS_YR = {"stock": 30.0, "etf_core": 30.0, "etf": 50.0, "etf_vol": 300.0,
                  "kf_factor": 0.0, "kf_port": 30.0, "mutual_fund": 1e9, "index": 30.0,
                  "fut_fin": 0.0, "fut_cmdty": 0.0, "fx": 0.0}
 LEVER_SPREAD_BPS_YR = 50.0
+# holding cost on |position| (bps/yr): implementation drag of paper portfolios (their internal rebalancing)
+HOLD_BPS_YR = {"kf_factor": 100.0, "kf_port": 10.0}
 # Ken French factors are paper portfolios: charge an annual implementation drag for their internal rebalancing
-KF_FACTOR_DRAG_BPS_YR = {"Mkt-RF": 5, "SMB": 100, "HML": 100, "RMW": 100, "CMA": 100, "Mom": 300,
+KF_FACTOR_DRAG_BPS_YR = {"Mkt-RF": 5, "SMB": 100, "HML": 100, "RMW": 100, "CMA": 100, "Mom": 300, "WML": 300,
                          "ST_Rev": 800, "LT_Rev": 100}

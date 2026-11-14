@@ -14,7 +14,8 @@ Accounting (everything in EXCESS-of-cash terms)
 ------------------------------------------------
 gross_t = sum_i h_{t-1,i} * xret_{t,i}          xret = asset return minus rf for funded assets (ETFs, stocks),
                                                  raw return for unfunded ones (futures, FX, long-short factors)
-fees_t  = borrow fee on short notional + leverage spread on funded long notional above 1x (daily accrual)
+fees_t  = borrow fee on short notional + leverage spread on funded long notional above 1x
+          + holding cost on |position| (e.g. implementation drag of paper factor portfolios), daily accrual
 cost_t  = sum_i cost_bps_i * |trade_{t,i}|       trade = new target - drifted holdings
 net_t   = gross_t - fees_t - cost_t
 
@@ -87,6 +88,7 @@ def exante_vol(target: pd.DataFrame, xret: pd.DataFrame, window: int = 126, half
 
 def backtest(target: pd.DataFrame, xret: pd.DataFrame, cost_bps: pd.Series | float = 0.0,
              borrow_bps_yr: pd.Series | float = 0.0, funded: pd.Series | bool = True, lag: int = 1,
+             hold_bps_yr: pd.Series | float = 0.0,
              vol_target: float | None = 0.10, vol_window: int = 126, vol_halflife: float = 42,
              lev_cap: float = 3.0, lever_spread_bps_yr: float = 50.0, drift: bool = True,
              keep_held: bool = False, max_scale: float = 10.0) -> BTResult:
@@ -145,6 +147,7 @@ def backtest(target: pd.DataFrame, xret: pd.DataFrame, cost_bps: pd.Series | flo
 
     c = as_vec(cost_bps, 0.0) / 1e4
     b = as_vec(borrow_bps_yr, 0.0) / 1e4 / TD
+    hc = as_vec(hold_bps_yr, 0.0) / 1e4 / TD
     f = as_vec(funded, 1.0).astype(bool) if not isinstance(funded, bool) else np.full(len(cols), funded)
     ls = lever_spread_bps_yr / 1e4 / TD
 
@@ -155,7 +158,8 @@ def backtest(target: pd.DataFrame, xret: pd.DataFrame, cost_bps: pd.Series | flo
     for t in range(T):
         r = X0[t]
         g = float(h @ r)
-        fee = float(b @ np.maximum(-h, 0.0)) + ls * max(float(np.maximum(h, 0.0)[f].sum()) - 1.0, 0.0)
+        fee = float(b @ np.maximum(-h, 0.0)) + ls * max(float(np.maximum(h, 0.0)[f].sum()) - 1.0, 0.0) \
+            + float(hc @ np.abs(h))
         if drift:
             denom = 1.0 + g
             hp = h * (1.0 + r) / denom if denom > 1e-6 else h.copy()

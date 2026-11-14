@@ -1,0 +1,76 @@
+{
+ "strategy": "s02_factor_momentum",
+ "version": "v1",
+ "start": "1975-01-02",
+ "end": "2020-12-31",
+ "n_years": 47.13,
+ "sharpe": 1.0638105423442368,
+ "ann_ret": 0.08555643033832043,
+ "ann_vol": 0.08042449941301237,
+ "max_dd": -0.28559335012356546,
+ "calmar": 0.30038458039409593,
+ "sortino": 1.5230352403053733,
+ "skew": -0.3316191203731549,
+ "turnover_yr": 23.428602148844156,
+ "cost_drag_yr": 0.023428602148844152,
+ "avg_gross_lev": 2.808037887714348,
+ "beta_spy": 0.0033959778008743136,
+ "corr_spy": 0.007085821634093204,
+ "t_hac": 5.800923566877543,
+ "psr0": 0.9999999999995525,
+ "dsr": 0.9999999999995525,
+ "n_trials": 1,
+ "sr_subperiods": [
+  1.252,
+  1.641,
+  0.327
+ ],
+ "sr_ci_lo": 0.687418174596088,
+ "sr_ci_hi": 1.4448241963321862,
+ "pos_years": "37/46",
+ "hit_monthly": 0.6177536231884058,
+ "n_assets": 32,
+ "sharpe_2004_2020": 0.35723119699992717,
+ "sharpe_cost2x": 0.7635611802426628,
+ "sharpe_lag+1": 1.025832528909963,
+ "lookahead_passed": true,
+ "lookahead_detail": {
+  "2008-06-30": {
+   "n_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 22035
+  },
+  "2014-03-31": {
+   "n_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 23535
+  },
+  "2019-09-30": {
+   "n_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 24970
+  }
+ },
+ "params": {
+  "regions": [
+   "US",
+   "Dev",
+   "Eur",
+   "Jpn",
+   "APxJ",
+   "NA"
+  ],
+  "lookbacks_m": [
+   1,
+   3,
+   6,
+   12
+  ],
+  "vol_halflife": 63,
+  "include_reversal": true
+ },
+ "runtime_s": 5.6
+}
