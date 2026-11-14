@@ -1,0 +1,153 @@
+{
+ "strategy": "s10_turn_of_month",
+ "version": "v4",
+ "start": "2004-01-02",
+ "end": "2020-12-31",
+ "n_years": 16.98,
+ "sharpe": 0.929946601839145,
+ "ann_ret": 0.05090741944118081,
+ "ann_vol": 0.054742303848954094,
+ "max_dd": -0.10899427937182105,
+ "calmar": 0.46463464551761885,
+ "sortino": 1.3741304886272414,
+ "skew": -0.781179601755317,
+ "turnover_yr": 59.74876595899556,
+ "cost_drag_yr": 0.011949753191799114,
+ "fee_drag_yr": 0.00021646588466684496,
+ "total_drag_yr": 0.01216621907646596,
+ "dsr_program": 0.3290947238873482,
+ "n_trials_program": 49,
+ "ruined": "None",
+ "avg_gross_lev": 0.2548064741263366,
+ "beta_spy": 0.07163935376818696,
+ "corr_spy": 0.251587502596512,
+ "t_hac": 3.6689814457557826,
+ "psr0": 0.999892834448768,
+ "dsr": 0.9890571849035931,
+ "n_trials": 8,
+ "sr_subperiods": [
+  1.096,
+  1.197,
+  0.522
+ ],
+ "sr_ci_lo": 0.4524544530838976,
+ "sr_ci_hi": 1.4724879551434369,
+ "pos_years": "15/17",
+ "hit_monthly": 0.6372549019607843,
+ "n_assets": 3,
+ "sharpe_2004_2020": 0.929946601839145,
+ "sharpe_cost2x": 0.7078204302573691,
+ "sharpe_lag+1": 0.036151239732371644,
+ "lookahead_passed": true,
+ "lookahead_detail": {
+  "2005-03-24": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 668
+  },
+  "2007-08-03": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 1262
+  },
+  "2009-03-16": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 1668
+  },
+  "2010-05-07": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 1957
+  },
+  "2012-03-01": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 2415
+  },
+  "2014-03-17": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 2927
+  },
+  "2015-11-27": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 3357
+  },
+  "2016-11-09": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 3597
+  },
+  "2018-06-15": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 3998
+  },
+  "2019-12-05": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 4369
+  },
+  "2020-09-25": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 4572
+  }
+ },
+ "params": {
+  "bond_assets": [
+   "TLT",
+   "IEF"
+  ],
+  "bond_days_from_end": [
+   -2,
+   -1
+  ],
+  "equity_assets": [
+   "SPY"
+  ],
+  "equity_days_from_start": [
+   1,
+   2,
+   3
+  ],
+  "vol_halflife": 63,
+  "fomc_day": true
+ },
+ "runtime_s": 7.4
+}

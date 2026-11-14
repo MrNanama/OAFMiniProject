@@ -154,3 +154,15 @@ def trading_calendar(ds, ahead: int = 40) -> pd.DatetimeIndex:
     ses = nyse_sessions()
     i = ses.searchsorted(cal[-1], side="right")
     return cal.append(ses[i:i + ahead])
+
+
+def scheduled_calendar(ds, ahead: int = 40) -> pd.DatetimeIndex:
+    """trading_calendar() plus the exchange's AD-HOC closures (9/11, Hurricane Sandy, state funerals ...), which
+    were not known in advance. Calendar positions such as 'day -2 of the month' must be computed on THIS schedule;
+    a decision that falls on a closed day is executed at the next session by the engine."""
+    import exchange_calendars as xc
+    cal = trading_calendar(ds, ahead)
+    ah = pd.DatetimeIndex(xc.get_calendar("XNYS", start="1985-01-01", end="2030-12-31").adhoc_holidays)
+    ah = ah.tz_localize(None) if ah.tz is not None else ah
+    ah = ah[(ah >= cal[0]) & (ah <= cal[-1])]
+    return cal.union(ah)

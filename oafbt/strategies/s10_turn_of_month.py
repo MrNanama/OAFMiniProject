@@ -1,6 +1,8 @@
 """s10 - Month-turn flow effects in bonds and equities (wildcard: flows/calendar).
 
 v1: long SPY over trading days -1..+3 around month end (classic turn-of-month). Dev SR 0.23.
+v4: final-review fix - day positions on the SCHEDULED calendar (Hurricane Sandy 2012 closure was not known when the
+    2012-10-24/25 decisions were made).
 v3: + equity exposure over scheduled FOMC announcement days (pre-announcement drift, Lucca & Moench 2015; dev
     event study: SPY +21 bps t=2.1 in 1994-2007 and +35 bps t=2.8 in 2008-2020; schedule published a year ahead).
 v2: two flow-driven sleeves that rotate at the month turn:
@@ -18,7 +20,7 @@ import numpy as np
 import pandas as pd
 
 from .base import Strategy
-from .utils import ewm_vol, trading_calendar
+from .utils import ewm_vol, scheduled_calendar
 
 
 def month_positions(cal: pd.DatetimeIndex):
@@ -29,9 +31,18 @@ def month_positions(cal: pd.DatetimeIndex):
     return from_end, from_start
 
 
+def _to_sessions(flag: pd.Series, cal: pd.DatetimeIndex) -> pd.Series:
+    """decision flags on the scheduled calendar -> data sessions; a decision dated on an (unannounced) closed day
+    is taken at the next session (latest decision wins)"""
+    f = flag[flag.index <= cal[-1]]
+    pos = np.minimum(cal.searchsorted(f.index), len(cal) - 1)
+    out = pd.Series(f.to_numpy(), index=cal[pos])
+    return out.groupby(level=0).last().reindex(cal).ffill().fillna(False).astype(bool)
+
+
 class MonthTurnFlows(Strategy):
     name = "s10_turn_of_month"
-    version = "v3"
+    version = "v4"
     universe = "multiasset"
     calendar_timed = True     # trades scheduled in advance (MOC orders): lag+1 test not meaningful
     thesis = "Month-end bond index extension and month-start equity inflows create predictable calendar returns."
@@ -47,7 +58,7 @@ class MonthTurnFlows(Strategy):
         assets = p["bond_assets"] + p["equity_assets"]
         X = ds.xret(assets)
         cal = ds.calendar
-        full = trading_calendar(ds)                      # published NYSE sessions incl. the next few weeks
+        full = scheduled_calendar(ds)                    # v4: SCHEDULED sessions (ad-hoc closures added back)
         fe, fs = month_positions(full)
         bond_on = fe.isin(p["bond_days_from_end"])       # want exposure to THESE days' returns
         eq_on = fs.isin(p["equity_days_from_start"])
@@ -55,8 +66,8 @@ class MonthTurnFlows(Strategy):
             eq_on = eq_on | pd.Series(full.isin(ds.fomc_dates()), index=full)
         # exposure over day t's return is held from the close of t-1, i.e. executed at close t-1, i.e. DECIDED
         # at close t-2 (engine lag = 1). Shift the flags back by 2 sessions on the published calendar.
-        bond_dec = bond_on.shift(-2, fill_value=False).reindex(cal)
-        eq_dec = eq_on.shift(-2, fill_value=False).reindex(cal)
+        bond_dec = _to_sessions(bond_on.shift(-2, fill_value=False), cal)
+        eq_dec = _to_sessions(eq_on.shift(-2, fill_value=False), cal)
         vol = ewm_vol(X, halflife=p["vol_halflife"])     # known at the decision date
         nb, ne = len(p["bond_assets"]), len(p["equity_assets"])
         W = pd.DataFrame(0.0, index=cal, columns=assets)

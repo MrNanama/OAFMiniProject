@@ -16,13 +16,13 @@ import numpy as np
 import pandas as pd
 
 from .base import Strategy
-from .utils import ewm_vol, trading_calendar
-from .s10_turn_of_month import month_positions
+from .utils import ewm_vol, scheduled_calendar
+from .s10_turn_of_month import month_positions, _to_sessions
 
 
 class RebalancingFlows(Strategy):
     name = "s15_rebalancing_flows"
-    version = "v2"
+    version = "v3"
     universe = "multiasset"
     calendar_timed = True     # trades scheduled in advance (MOC orders): lag+1 test not meaningful
     thesis = "Rebalancing to fixed stock/bond weights pushes the stock-bond spread against MTD performance at month end."
@@ -38,12 +38,12 @@ class RebalancingFlows(Strategy):
         a, b = p["stock"], p["bond"]
         X = ds.xret([a, b])
         cal = ds.calendar
-        full = trading_calendar(ds)
+        full = scheduled_calendar(ds)                     # v3: scheduled calendar (ad-hoc closures added back)
         fe, fs = month_positions(full)
         lr = np.log1p(X[a]) - np.log1p(X[b])
         per = cal.to_period("M")
         mtd = lr.groupby(per).cumsum()                           # MTD spread up to each close
-        sig_day = fe.reindex(cal) == -4
+        sig_day = _to_sessions(fe == -4, cal) & ~_to_sessions(fe == -4, cal).shift(1, fill_value=False)
         rp = mtd.where(sig_day)
         rp_m = rp.dropna()
         sd = rp_m.rolling(p["z_months"], min_periods=24).std().shift(1)
@@ -51,8 +51,8 @@ class RebalancingFlows(Strategy):
         z = z.where(z.abs() >= p.get("z_min", 0.0), 0.0)
         zd = z.reindex(cal).ffill(limit=30)                        # latest month's z (known from day -4 on)
         vol = ewm_vol(X, halflife=63)
-        late_on = fe.isin(p["late"]).shift(-2, fill_value=False).reindex(cal)     # decide 2 sessions ahead (lag 1)
-        early_on = fs.isin(p["early"]).shift(-2, fill_value=False).reindex(cal)
+        late_on = _to_sessions(fe.isin(p["late"]).shift(-2, fill_value=False), cal)   # decide 2 sessions ahead
+        early_on = _to_sessions(fs.isin(p["early"]).shift(-2, fill_value=False), cal)
         sgn = pd.Series(0.0, index=cal)
         sgn[late_on.fillna(False).to_numpy()] = -1.0
         sgn[early_on.fillna(False).to_numpy()] = 1.0

@@ -102,3 +102,16 @@ s12 1.53-1.80 | s10 0.79-1.06 (FOMC sleeve +0.13) | s09 0.63-0.82 | s02 0.60-0.6
 (PEP alone 0.43, PAP alone 0.18 - the combination matters) | s15 0.25-0.58 (adding day +3 hurts; z filter 0/0.5/1 ->
 0.38/0.52/0.58) | s11 0.36-0.47 | s01 0.32-0.44. No knife-edge parameter; chosen values are not the best of their
 grids (no cherry-picking: e.g. s16 'post-auction leg only' 0.57 > chosen 0.54, s15 z_min=1 0.58 > chosen 0.52).
+
+## Round 6: final independent review before the freeze
+Three fresh reviewers (no access to my reasoning) audited the 10 final strategies. Clean: s02, s05, s09, s15.
+Fixed (all re-run and logged):
+| strategy | finding | fix | SR 2004-20 |
+|---|---|---|---|
+| s11 | 'dollar-neutral' carry book was +17% net long (vol scaling after demeaning) | neutral after vol scaling (v3) | 0.43 -> 0.28 |
+| s01 | traded GLD_X's GC=F-future segment (signal-only) and could short mutual-fund proxy segments | gold via GLD only; no proxy shorts (v4) | 0.38 -> 0.41 |
+| s16 | post-auction long not gated on the announcement date (4 same-day-announced auctions) | gate both legs (v2) | 0.54 -> 0.54 |
+| s10/s15/s16 | month-day positions used the realised calendar incl. unannounced closures (Sandy 2012) | scheduled calendar (`utils.scheduled_calendar`) | s10 0.95 -> 0.93 |
+| s12 | trend-strength sizing is normalised away in row mode (effective rule: invested if any lookback > 0) | docstring corrected; graded variant logged (1.46), not adopted | 1.76 |
+| s08 | headline leans on 2000-04 (thin survivor universe); 2005-20 SR 0.23 | reported, no change | 0.33 |
+**Final dev equal-risk combination: Sharpe 1.60 (2005-2020), 11.9%/yr, vol 7.5%, max DD -7.5%, 15/16 positive years.**

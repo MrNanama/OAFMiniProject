@@ -16,12 +16,12 @@ import numpy as np
 import pandas as pd
 
 from .base import Strategy
-from .utils import ewm_vol, trading_calendar
+from .utils import ewm_vol, scheduled_calendar
 
 
 class TreasuryAuctionCycle(Strategy):
     name = "s16_treasury_auctions"
-    version = "v1"
+    version = "v2"
     universe = "multiasset"
     calendar_timed = True     # trades scheduled from published announcements, executed at the close
     thesis = "Anticipated auction supply depresses long Treasuries into the auction; prices recover after it."
@@ -35,7 +35,7 @@ class TreasuryAuctionCycle(Strategy):
         a = p["asset"]
         X = ds.xret([a])
         cal = ds.calendar
-        full = trading_calendar(ds)
+        full = scheduled_calendar(ds)                     # v2: scheduled calendar (ad-hoc closures added back)
         au = ds.treasury_auctions()
         au = au[au.orig_term.isin(p["terms"])]
         expo = pd.Series(0.0, index=full)                         # exposure wanted over each day's return
@@ -50,10 +50,14 @@ class TreasuryAuctionCycle(Strategy):
                 if 0 <= t < len(full):
                     expo.iloc[t] -= 1.0
             for k in p["post"]:
-                if iq + k < len(full):
+                # v2 (final-review fix): the post-auction long is also decided only after the announcement
+                if iq + k < len(full) and iq + k - 2 >= ia:
                     expo.iloc[iq + k] += 1.0
         expo = np.sign(expo)
-        dec = expo.shift(-2, fill_value=0.0).reindex(cal).fillna(0.0)    # decide two sessions ahead
+        d2 = expo.shift(-2, fill_value=0.0)
+        d2 = d2[d2.index <= cal[-1]]
+        pos = np.minimum(cal.searchsorted(d2.index), len(cal) - 1)
+        dec = pd.Series(d2.to_numpy(), index=cal[pos]).groupby(level=0).last().reindex(cal).ffill().fillna(0.0)
         vol = ewm_vol(X, halflife=63)[a]
         W = pd.DataFrame({a: dec / vol}, index=cal).fillna(0.0)
         W = W.loc[X[a].first_valid_index():]
