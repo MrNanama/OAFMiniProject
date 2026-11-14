@@ -1,0 +1,2 @@
+ts,strategy,version,tag,phash,params,sharpe,ann_ret,max_dd,turnover_yr,note
+2026-11-14T19:18:09+00:00,s07_industry_seasonality,v1,dev,bb740414ed,"{""years"": 20, ""min_obs"": 10, ""n_side"": 10}",0.32864332192091433,0.032702009351683554,-0.4401121271549233,46.54697469704112,v1 initial (spec)

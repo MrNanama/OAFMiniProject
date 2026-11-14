@@ -1,0 +1,2 @@
+ts,strategy,version,tag,phash,params,sharpe,ann_ret,max_dd,turnover_yr,note
+2026-11-14T19:18:59+00:00,s06_curve_pca_rv,v1,dev,861761526a,"{""z_window"": 252, ""dur_window"": 252, ""z_cap"": 2.0, ""freq"": ""W""}",-0.4852042789744608,-0.01073113812578732,-0.15109300963840566,31.277285850961718,"v1 initial (spec): 2*10y-5y-30y fly z-score reversion, DV01-neutral IEI/IEF/TLT"

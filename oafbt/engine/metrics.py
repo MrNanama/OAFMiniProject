@@ -25,8 +25,10 @@ def sortino(x) -> float:
 
 
 def drawdown(x: pd.Series) -> pd.Series:
+    """drawdown of compounded wealth, starting from initial capital 1.0 (a first-day loss counts)"""
     w = (1 + _clean(x)).cumprod()
-    return w / w.cummax() - 1
+    peak = np.maximum(w.cummax(), 1.0)
+    return (w / peak - 1).clip(lower=-1.0)
 
 
 def max_dd_duration(x: pd.Series) -> int:
@@ -118,17 +120,20 @@ def subperiod_sharpes(x: pd.Series, k: int = 3) -> list:
 
 def perf_stats(net: pd.Series, bench: pd.Series | None = None, turnover: pd.Series | None = None,
                cost: pd.Series | None = None, gross_lev: pd.Series | None = None, n_trials: int = 1,
-               start=None, end=None) -> dict:
+               start=None, end=None, first_trade=None, fees: pd.Series | None = None,
+               n_trials_program: int | None = None, sr_std_program: float | None = None) -> dict:
+    """Stats on daily excess returns over [start, end]. Only the engine warm-up (before `first_trade`, the first
+    day with a position) is trimmed; flat periods the strategy chose are kept."""
     x = net.copy()
+    if first_trade is not None:
+        st = pd.Timestamp(first_trade) + pd.Timedelta(days=1)
+        start = st if start is None else max(pd.Timestamp(start), st)
     if start is not None:
         x = x[x.index >= pd.Timestamp(start)]
     if end is not None:
         x = x[x.index <= pd.Timestamp(end)]
-    # drop the leading flat period (warm-up)
-    nz = np.flatnonzero(x.to_numpy() != 0)
-    if nz.size == 0:
-        return {"sharpe": np.nan, "n_years": 0.0}
-    x = x.iloc[nz[0]:]
+    if len(x) < 20 or x.std() == 0:
+        return {"sharpe": np.nan, "n_years": round(len(x) / TD, 2)}
     yrs = len(x) / TD
     dd = drawdown(x)
     mdd = float(dd.min())
@@ -153,6 +158,12 @@ def perf_stats(net: pd.Series, bench: pd.Series | None = None, turnover: pd.Seri
         out["turnover_yr"] = float(turnover.reindex(x.index).mean() * TD)
     if cost is not None:
         out["cost_drag_yr"] = float(cost.reindex(x.index).mean() * TD)
+    if fees is not None:
+        out["fee_drag_yr"] = float(fees.reindex(x.index).mean() * TD)
+        out["total_drag_yr"] = out.get("cost_drag_yr", 0.0) + out["fee_drag_yr"]
+    if n_trials_program:
+        out["n_trials_program"] = int(n_trials_program)
+        out["dsr_program"] = dsr(x, n_trials_program, sr_std_program)
     if gross_lev is not None:
         out["avg_gross_lev"] = float(gross_lev.reindex(x.index).mean())
     if bench is not None:

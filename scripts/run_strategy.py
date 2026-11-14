@@ -25,6 +25,7 @@ def main():
     ap.add_argument("name")
     ap.add_argument("--note", default="")
     ap.add_argument("--no-check", action="store_true")
+    ap.add_argument("--checks", type=int, default=2, help="random look-ahead cut dates (+5 fixed +4 own rebalance dates)")
     ap.add_argument("--param", nargs="*", default=[])
     a = ap.parse_args()
     params = {}
@@ -42,18 +43,20 @@ def main():
     s = out["stats"]
     res = out["res"]
     bench = runner.benchmark(ds, strat.universe)
-    common = perf_stats(res.net, bench=bench, turnover=res.turnover, cost=res.cost, start="2004-01-01", end=C.DEV_END)
+    common = perf_stats(res.net, bench=bench, turnover=res.turnover, cost=res.cost, start="2004-01-01", end=C.DEV_END,
+                        first_trade=res.info.get("first_trade"))
     c2 = runner.run(strat, ds=ds, cost_mult=2.0, save=False, log=False)["stats"]
     l2 = runner.run(strat, ds=ds, lag=strat.lag + 1, save=False, log=False)["stats"]
     summ = {k: s.get(k) for k in ["strategy", "version", "start", "end", "n_years", "sharpe", "ann_ret", "ann_vol",
                                   "max_dd", "calmar", "sortino", "skew", "turnover_yr", "cost_drag_yr",
+                                  "fee_drag_yr", "total_drag_yr", "dsr_program", "n_trials_program", "ruined",
                                   "avg_gross_lev", "beta_spy", "corr_spy", "t_hac", "psr0", "dsr", "n_trials",
                                   "sr_subperiods", "sr_ci_lo", "sr_ci_hi", "pos_years", "hit_monthly", "n_assets"]}
     summ["sharpe_2004_2020"] = common.get("sharpe")
     summ["sharpe_cost2x"] = c2.get("sharpe")
     summ["sharpe_lag+1"] = l2.get("sharpe")
     if not a.no_check:
-        lc = lookahead_check(strat)
+        lc = lookahead_check(strat, n_random=a.checks)
         summ["lookahead_passed"] = lc["passed"]
         summ["lookahead_detail"] = {k: v for k, v in lc.items() if k != "passed"}
     summ["params"] = strat.params
@@ -64,7 +67,7 @@ def main():
     print(f"{summ['strategy']} {summ['version']} [{summ['start']}..{summ['end']}, {summ['n_years']}y] "
           f"SR={f('sharpe')} (04-20: {f('sharpe_2004_2020')}, 2xcost: {f('sharpe_cost2x')}, lag+1: {f('sharpe_lag+1')}) "
           f"ret={f('ann_ret', True)} vol={f('ann_vol', True)} maxDD={f('max_dd', True)} calmar={f('calmar')} "
-          f"sortino={f('sortino')} skew={f('skew')} turn={f('turnover_yr')}x cost={f('cost_drag_yr', True)} "
+          f"sortino={f('sortino')} skew={f('skew')} turn={f('turnover_yr')}x cost={f('cost_drag_yr', True)} fees={f('fee_drag_yr', True)} "
           f"lev={f('avg_gross_lev')} beta={f('beta_spy')} t={f('t_hac')} dsr={f('dsr')} sub={summ['sr_subperiods']} "
           f"CI=[{f('sr_ci_lo')},{f('sr_ci_hi')}] posyrs={summ['pos_years']} lookahead={summ.get('lookahead_passed')} "
           f"({summ['runtime_s']}s)")

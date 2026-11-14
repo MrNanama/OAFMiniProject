@@ -30,27 +30,39 @@ def run(strategy, ds: DataStore | None = None, holdout: bool = False, save: bool
     ds = ds or DataStore(holdout=holdout)
     W = strategy.target_weights(ds)
     W = W.astype(float)
+    is_reb = W.notna().any(axis=1)                     # before pruning: an all-zero exit row must stay a row
     used = (W.fillna(0.0) != 0).any()
     W = W.loc[:, used[used].index]
+    W.loc[is_reb] = W.loc[is_reb].fillna(0.0)
     X = strategy.asset_returns(ds, list(W.columns))
     meta = strategy.asset_meta(ds, list(W.columns))
+    if "tradable" in meta and not meta["tradable"].all():
+        bad = list(meta.index[~meta["tradable"]])
+        raise ValueError(f"{strategy.name}: non-tradable assets (signal-only) carry weight: {bad[:10]}")
     lev_cap = strategy.lev_cap or C.LEV_CAP[strategy.universe]
+    rf = ds.rf.reindex(X.index).ffill() if strategy.universe != "kf" else None
     res = backtest(W, X, cost_bps=meta["cost_bps"] * cost_mult, borrow_bps_yr=meta["borrow_bps"],
                    funded=meta["funded"], lag=strategy.lag if lag is None else lag,
-                   hold_bps_yr=meta["hold_bps"] if "hold_bps" in meta else 0.0,
-                   vol_target=strategy.vol_target, vol_window=strategy.vol_window,
-                   vol_halflife=strategy.vol_halflife, lev_cap=lev_cap, keep_held=keep_held)
+                   hold_bps_yr=meta["hold_bps"] if "hold_bps" in meta else 0.0, rf=rf, fee_mult=cost_mult,
+                   vol_target=strategy.vol_target, vol_mode=getattr(strategy, "vol_mode", "row"),
+                   vol_window=strategy.vol_window, vol_halflife=strategy.vol_halflife, lev_cap=lev_cap,
+                   keep_held=keep_held)
     if holdout:
         start, end = eval_start or C.HOLDOUT_START, eval_end
     else:
         start, end = eval_start or C.EVAL_START[strategy.universe], eval_end or C.DEV_END
     tag = tag or ("holdout" if holdout else "dev")
     n_prev = ledger.n_trials(strategy.name, tag="dev")
+    is_new = not ledger.is_logged(strategy.name, strategy.version, strategy.params, tag="dev")
+    n_prog = ledger.n_trials(None, tag="dev") + (1 if is_new else 0)
     bench = benchmark(ds, strategy.universe)
     stats = perf_stats(res.net, bench=bench, turnover=res.turnover, cost=res.cost, gross_lev=res.gross_lev,
-                       n_trials=max(n_prev, 1), start=start, end=end)
+                       n_trials=max(n_prev + (1 if is_new else 0), 1), start=start, end=end,
+                       first_trade=res.info.get("first_trade"), fees=res.fees, n_trials_program=n_prog,
+                       sr_std_program=ledger.trials_sr_std())
     stats.update({"strategy": strategy.name, "version": strategy.version, "universe": strategy.universe,
                   "cost_mult": cost_mult, "lag": res.info["lag"], "n_assets": int(W.shape[1]),
+                  "ruined": str(res.info.get("ruined")), "vol_mode": res.info.get("vol_mode"),
                   "params": strategy.params})
     if save:
         d = RUNS / strategy.name / (strategy.version + ("" if tag == "dev" else f"_{tag}"))

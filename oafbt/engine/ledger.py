@@ -48,3 +48,11 @@ def trials_sr_std(tag: str = "dev") -> float | None:
     d = pd.concat([pd.read_csv(f) for f in LEDGER.glob("*.csv")], ignore_index=True)
     d = d[d["tag"] == tag].drop_duplicates(subset=["strategy", "version", "phash"])
     return float(d["sharpe"].std()) if len(d) > 5 else None
+
+
+def is_logged(strategy: str, version: str, params: dict, tag: str = "dev") -> bool:
+    f = LEDGER / f"{strategy}.csv"
+    if not f.exists():
+        return False
+    d = pd.read_csv(f)
+    return bool(((d["tag"] == tag) & (d["version"] == version) & (d["phash"] == params_hash(params))).any())

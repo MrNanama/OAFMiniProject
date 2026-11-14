@@ -91,16 +91,28 @@ def cum_ret(ret: pd.DataFrame, window: int, skip: int = 0, min_frac: float = 0.8
 
 # ------------------------------------------------------------------ Ken French assets
 def kf_rf(ds) -> pd.Series:
-    return ds.kf("F-F_Research_Data_Factors_daily")["RF"]
+    """daily risk-free on the KF calendar: ^IRX-based ds.rf where available (1985+), KF daily RF before
+    (the KF daily file rounds RF to 0.01%/day, so it is only a fallback)"""
+    kf = ds.kf("F-F_Research_Data_Factors_daily")["RF"]
+    return ds.rf.reindex(kf.index).combine_first(kf)
 
 
 def kf_factor_returns(ds, specs: dict) -> pd.DataFrame:
     """specs: {asset_name: (table, column)} for long-short factors (already excess). Asset names must start with
-    'KF:F:' and end with the factor code used for the implementation-drag table (e.g. 'KF:F:US:Mom')."""
+    'KF:F:' and end with the factor code used for the implementation-drag table (e.g. 'KF:F:US:Mom').
+    All series are put on the US KF calendar: returns of non-US sessions (foreign trading on US holidays) are
+    compounded into the next US session, so annualisation with 252 days/yr stays correct."""
+    us = ds.kf("F-F_Research_Data_Factors_daily").index
     cols = {}
     for name, (table, col) in specs.items():
-        cols[name] = ds.kf(table)[col]
-    return pd.DataFrame(cols).sort_index()
+        r = ds.kf(table)[col]
+        if not r.index.isin(us).all():
+            nxt = us[np.minimum(us.searchsorted(r.index), len(us) - 1)]
+            ok = r.index <= us[-1]
+            lr = np.log1p(r[ok]).groupby(nxt[ok]).sum(min_count=1)
+            r = np.expm1(lr)
+        cols[name] = r.reindex(us)
+    return pd.DataFrame(cols)
 
 
 def kf_portfolio_returns(ds, table: str, prefix: str | None = None) -> pd.DataFrame:

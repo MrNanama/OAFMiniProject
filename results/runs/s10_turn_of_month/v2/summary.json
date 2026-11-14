@@ -4,54 +4,129 @@
  "start": "2004-01-02",
  "end": "2020-12-31",
  "n_years": 16.98,
- "sharpe": 0.819937991424474,
- "ann_ret": 0.04251331178470766,
- "ann_vol": 0.051849423040941804,
- "max_dd": -0.09858171339339883,
- "calmar": 0.4262599780990908,
- "sortino": 1.1815404772722062,
- "skew": -1.2054895251810067,
- "turnover_yr": 50.39678141560475,
- "cost_drag_yr": 0.010079356283120951,
- "avg_gross_lev": 0.23631529259063083,
- "beta_spy": 0.057399297425168645,
- "corr_spy": 0.2128291034831648,
- "t_hac": 3.2274739177180165,
- "psr0": 0.9994070567766523,
- "dsr": 0.9769660148882932,
+ "sharpe": 0.819341632929636,
+ "ann_ret": 0.04248767324233116,
+ "ann_vol": 0.05185587004826343,
+ "max_dd": -0.09846269185176537,
+ "calmar": 0.42650070631345544,
+ "sortino": 1.1809861511862851,
+ "skew": -1.1960915106739014,
+ "turnover_yr": 50.40071042182377,
+ "cost_drag_yr": 0.010080142084364753,
+ "fee_drag_yr": 0.00020257324657153928,
+ "total_drag_yr": 0.010282715330936292,
+ "dsr_program": 0.33719455215586774,
+ "n_trials_program": 20,
+ "ruined": "None",
+ "avg_gross_lev": 0.23633550773892834,
+ "beta_spy": 0.057392715092520974,
+ "corr_spy": 0.21277437356506348,
+ "t_hac": 3.225357052822012,
+ "psr0": 0.9994041501638329,
+ "dsr": 0.9768695450715809,
  "n_trials": 6,
  "sr_subperiods": [
-  0.858,
-  1.186,
-  0.461
+  0.861,
+  1.184,
+  0.459
  ],
- "sr_ci_lo": 0.3265896470677721,
- "sr_ci_hi": 1.3545229238938927,
+ "sr_ci_lo": 0.32809047497186095,
+ "sr_ci_hi": 1.3550661119517873,
  "pos_years": "13/17",
- "hit_monthly": 0.5980392156862745,
+ "hit_monthly": 0.5931372549019608,
  "n_assets": 3,
- "sharpe_2004_2020": 0.819937991424474,
- "sharpe_cost2x": 0.6258437350438616,
- "sharpe_lag+1": 0.25973851578664575,
+ "sharpe_2004_2020": 0.819341632929636,
+ "sharpe_cost2x": 0.6213606365604042,
+ "sharpe_lag+1": 0.2595037445238089,
  "lookahead_passed": true,
  "lookahead_detail": {
-  "2008-06-30": {
-   "n_mismatch": 0,
+  "2005-03-24": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
    "first_mismatch": null,
    "rows_after_cut": 0,
-   "rows_compared": 1490
+   "rows_compared": 668
   },
-  "2014-03-31": {
-   "n_mismatch": 0,
+  "2007-08-30": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
    "first_mismatch": null,
    "rows_after_cut": 0,
-   "rows_compared": 2937
+   "rows_compared": 1281
   },
-  "2019-09-30": {
-   "n_mismatch": 0,
+  "2009-03-30": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
    "first_mismatch": null,
    "rows_after_cut": 0,
-   "rows_compared": 4322
+   "rows_compared": 1678
+  },
+  "2010-05-07": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 1957
+  },
+  "2012-03-01": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 2415
+  },
+  "2014-03-17": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 2927
+  },
+  "2016-01-05": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 3382
+  },
+  "2016-11-09": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 3597
+  },
+  "2018-06-15": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 3998
+  },
+  "2019-12-05": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 4369
+  },
+  "2020-09-29": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 4574
   }
  },
  "params": {
@@ -73,5 +148,5 @@
   ],
   "vol_halflife": 63
  },
- "runtime_s": 5.7
+ "runtime_s": 6.7
 }

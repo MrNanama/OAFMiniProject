@@ -1,0 +1,124 @@
+{
+ "strategy": "s08_ml_stock_ranker",
+ "version": "v1",
+ "start": "2000-01-03",
+ "end": "2020-12-31",
+ "n_years": 20.97,
+ "sharpe": -0.23490078883245322,
+ "ann_ret": -0.021212949355811063,
+ "ann_vol": 0.09030599454879457,
+ "max_dd": -0.6840396711824124,
+ "calmar": -0.03651049557947997,
+ "sortino": -0.32996862738283267,
+ "skew": -0.0038617249113301836,
+ "turnover_yr": 27.536050842939424,
+ "cost_drag_yr": 0.013768025421469713,
+ "fee_drag_yr": 0.0021935282686851177,
+ "total_drag_yr": 0.015961553690154832,
+ "dsr_program": 1.5622658804274748e-08,
+ "n_trials_program": 24,
+ "ruined": "None",
+ "avg_gross_lev": 1.451474175972004,
+ "beta_spy": 0.13090493475441586,
+ "corr_spy": 0.28843684933809055,
+ "t_hac": -1.0201940781865069,
+ "psr0": 0.1410922719974147,
+ "dsr": 0.1410922719974147,
+ "n_trials": 1,
+ "sr_subperiods": [
+  0.636,
+  -0.422,
+  -0.886
+ ],
+ "sr_ci_lo": -0.6947150094687778,
+ "sr_ci_hi": 0.274105423410838,
+ "pos_years": "7/21",
+ "hit_monthly": 0.4603174603174603,
+ "n_assets": 518,
+ "sharpe_2004_2020": -0.43436654484772325,
+ "sharpe_cost2x": -0.4102263998088368,
+ "sharpe_lag+1": -0.28000027293050833,
+ "lookahead_passed": true,
+ "lookahead_detail": {
+  "2004-11-30": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 5025
+  },
+  "2005-03-24": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 5104
+  },
+  "2006-10-31": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 5509
+  },
+  "2010-05-07": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 6393
+  },
+  "2012-03-01": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 6851
+  },
+  "2014-11-28": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 7542
+  },
+  "2016-11-09": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 8033
+  },
+  "2018-06-15": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 8434
+  },
+  "2020-08-31": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 8990
+  }
+ },
+ "params": {
+  "min_train_years": 3,
+  "q": 0.1,
+  "gbm_iter": 150,
+  "gbm_depth": 3,
+  "ridge_alpha": 10.0
+ },
+ "runtime_s": 273.0
+}

@@ -1,0 +1,1 @@
+s04_volume_attention v1 [2000-01-03..2020-12-31, 20.97y] SR=-0.30 (04-20: -0.26, 2xcost: -0.57, lag+1: -0.30) ret=-1.9% vol=6.5% maxDD=-47.1% calmar=-0.05 sortino=-0.42 skew=0.23 turn=29.27x cost=1.5% fees=0.3% lev=1.95 beta=0.01 t=-1.49 dsr=0.03 sub=[-0.522, -0.199, -0.149] CI=[-0.72,0.09] posyrs=6/21 lookahead=True (33.2s)

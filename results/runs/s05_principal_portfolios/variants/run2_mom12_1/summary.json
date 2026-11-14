@@ -1,0 +1,80 @@
+{
+ "strategy": "s05_principal_portfolios",
+ "version": "v1",
+ "start": "1975-01-02",
+ "end": "2020-12-31",
+ "n_years": 46.04,
+ "sharpe": 0.637719876296647,
+ "ann_ret": 0.04854227301587602,
+ "ann_vol": 0.07611848841495997,
+ "max_dd": -0.2648371533376346,
+ "calmar": 0.17632754352728672,
+ "sortino": 0.9135902828274105,
+ "skew": -0.13137323513451676,
+ "turnover_yr": 13.85189599743376,
+ "cost_drag_yr": 0.00692594799871688,
+ "avg_gross_lev": 2.8586636561781713,
+ "beta_spy": 0.000894489056222467,
+ "corr_spy": 0.0019950020600426346,
+ "t_hac": 3.453982752825359,
+ "psr0": 0.9999918810978162,
+ "dsr": 0.9999918810978162,
+ "n_trials": 1,
+ "sr_subperiods": [
+  0.611,
+  1.029,
+  0.325
+ ],
+ "sr_ci_lo": 0.22678181090068353,
+ "sr_ci_hi": 1.0294780020675331,
+ "pos_years": "32/46",
+ "hit_monthly": 0.5489130434782609,
+ "n_assets": 25,
+ "sharpe_2004_2020": 0.36026257402657247,
+ "sharpe_cost2x": 0.5461703520726555,
+ "sharpe_lag+1": 0.6136024283519477,
+ "lookahead_passed": true,
+ "lookahead_detail": {
+  "2008-06-30": {
+   "n_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 420
+  },
+  "2014-03-31": {
+   "n_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 489
+  },
+  "2019-09-30": {
+   "n_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 555
+  }
+ },
+ "params": {
+  "tables": [
+   "25_Portfolios_5x5_Daily|VW"
+  ],
+  "signals": [
+   "mom12_1"
+  ],
+  "est_start": "1963-07",
+  "min_months": 120,
+  "k_pep": 3,
+  "k_pap": 3,
+  "sleeves": [
+   "pep",
+   "pap"
+  ],
+  "shrink": true,
+  "pca": "none",
+  "demean": true,
+  "disp_norm": true,
+  "disp_months": 12,
+  "cov_days": 252
+ },
+ "runtime_s": 8.3
+}

@@ -1,0 +1,2 @@
+ts,strategy,version,tag,phash,params,sharpe,ann_ret,max_dd,turnover_yr,note
+2026-11-14T19:18:17+00:00,s09_vrp_timing,v1,dev,bbce4beaa7,"{""ratio_max"": 0.95, ""rv_window"": 21}",0.705495082556189,0.04455668620424065,-0.08790401125393477,3.91735891397172,v1 initial (spec)

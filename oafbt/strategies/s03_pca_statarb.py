@@ -9,17 +9,27 @@ Pipeline (a weight row dated d uses only data dated <= d):
 1. PCA on the first trading day of each week (a schedule known in real time - no future calendar): correlation
    matrix of the trailing 252 daily returns of the stocks eligible that day (standardised returns); top k=15
    eigenvectors v_j; eigenportfolio weights Q_ij = v_ij / sigma_i.
-2. Every day d: eigenportfolio returns F_t = sum_i Q_ij R_it over the trailing 60 days (weights of the latest
-   PCA <= d); each eligible stock's 60 daily returns are regressed on [1, F] -> residuals eps (sum to zero).
+2. On each decision day d: eigenportfolio returns F_t = sum_i Q_ij R_it over the trailing 60 days (weights of the
+   latest PCA <= d); each eligible stock's 60 daily returns are regressed on [1, F] -> residuals eps (sum to zero).
+   Trading time (A&L sec. 6, applied at residual level): eps_t *= clip(avgVol_10d / Vol_t, 0.25, 4), then re-centred,
+   so idiosyncratic moves on abnormally high volume (news) count less than moves on thin volume (liquidity).
 3. X_k = cumsum(eps), k = 1..60; AR(1) X_{k+1} = a + b X_k + zeta -> kappa = -ln(b)*252, m = a/(1-b),
    sigma_eq = sqrt(var(zeta)/(1-b^2)). Centred s-score (A&L 2010): s = (X_60 - (m - <m>)) / sigma_eq, with
    <m> the cross-sectional mean of m over eligible stocks with a valid OU fit (0 < b < 1). X_60 = 0 by construction.
-4. Hysteresis per stock (A&L bands): open long s < -1.25, open short s > +1.25 - only if kappa > 252/30
-   (mean-reversion time < 30 trading days, i.e. half-life < ~21 days); close long s > -0.50, close short s < +0.75.
-   A position is also closed when the stock leaves the universe or its OU fit breaks down (b >= 1 or b <= 0).
-5. Book: equal dollars per open position, long and short legs each scaled to gross 1 (dollar neutral); the book's
-   residual market beta (rolling 252d OLS betas vs SPY) is hedged with SPY. A target row is emitted only on days
-   when the set of open positions changes (otherwise positions drift, avoiding pure re-weighting churn).
+4. Hysteresis per stock, evaluated on the first trading day of each week: open long s < -1.25, open short
+   s > +1.25 (A&L entry band) - only if kappa > 252/30 (mean-reversion time < 30 trading days, half-life < ~21 days);
+   close at equilibrium: long when s > 0, short when s < 0. (A&L close earlier, at -0.50 / +0.75, and decide daily;
+   here that turned over ~130x/yr and lost 6.5%/yr to 5 bps/side costs, while the entry signal's edge keeps accruing
+   for weeks - see results/runs/s03_pca_statarb/v1/notes.md.) A position is also closed when the stock leaves the
+   universe or its OU fit breaks down (b >= 1 or b <= 0).
+5. Book: equal dollars per open position, long and short legs each scaled to gross 1 -> dollar neutral, constant
+   gross 2. A target row is emitted only on decision days when the set of open positions changes (else drift).
+
+Hedge choice: dollar neutral, NO SPY hedge (option hedge="spy" kept). Positions are picked on factor residuals and both
+legs are diversified S&P 500 baskets (~74 names each), so the book's market beta is small: 2000-2020 mean +0.004,
+mean |beta| 0.06, sd 0.08 (rolling 252d betas). Because the 2x stock leverage cap binds on GROSS, a SPY leg makes the
+engine rescale the whole stock book whenever |hedge| moves: ~0.5%/yr of extra costs with daily rows (run 1 design),
+~0.15%/yr with weekly rows, to remove ~1.5% of vol in quadrature from a ~5.4% vol book - roughly a wash at best.
 """
 from __future__ import annotations
 
@@ -91,14 +101,15 @@ class PCAStatArb(Strategy):
                 "reg_window": 60,       # residual regression / OU estimation window (A&L: 60 days)
                 "max_missing": 3,       # max missing returns in the 60d window (filled with 0)
                 "tau_max": 30,          # trade only if mean-reversion time 1/kappa < 30 days (kappa > 252/30)
-                "s_open": 1.25,         # A&L bands
-                "s_close_long": 0.50,
-                "s_close_short": 0.75,
+                "s_open": 1.25,         # A&L entry band
+                "s_close_long": 0.0,    # exit at equilibrium (A&L: close long at s > -0.50, short at s < +0.75)
+                "s_close_short": 0.0,
+                "trade_freq": "W",      # decide on the first trading day of each week ("D" = daily, as A&L)
                 "center": True,         # centred s-score (subtract cross-sectional mean of m)
-                "hedge": "spy",         # "spy" = hedge the book's market beta with SPY; "none" = dollar neutral only
+                "hedge": "none",        # "none" = dollar neutral (see module doc); "spy" = hedge book beta with SPY
                 "beta_window": 252,
                 "min_names": 100,       # min eligible stocks to run the PCA
-                "volume_time": False,   # A&L sec. 6 trading-time residuals (eps * avgVol/Vol)
+                "volume_time": True,    # A&L sec. 6 trading-time residuals (eps * avgVol10/Vol, clipped, re-centred)
                 "vol_avg": 10}
 
     # -------------------------------------------------------------- signals
@@ -126,6 +137,8 @@ class PCAStatArb(Strategy):
         nU = Uv.sum(1)
         live = (np.arange(T) >= max(L, W)) & (nU >= p["min_names"])
         pca_days = np.flatnonzero(_first_of_period(cal, p["pca_freq"]) & live)
+        # decision days: every day ("D") or the first trading day of each week ("W"); s-scores only needed there
+        sched = np.ones(T, bool) if p["trade_freq"] == "D" else _first_of_period(cal, p["trade_freq"])
 
         S = np.full((T, N), np.nan)
         Bm = np.full((T, N), np.nan)
@@ -142,15 +155,22 @@ class PCAStatArb(Strategy):
             keep = np.isfinite(sd) & (sd > 0)
             el, Rw, mu, sd = el[keep], Rw[:, keep], mu[keep], sd[keep]
             Y = np.nan_to_num((Rw - mu) / sd)
-            _, sv, Vt = np.linalg.svd(Y, full_matrices=False)
-            Q = Vt[:k].T / sd[:, None]                         # eigenportfolio weights (Np x k)
+            # top-k eigenvectors of the correlation matrix Y'Y/(L-1) via the small L x L Gram matrix YY'
+            # (same subspace as an SVD of Y, ~3x faster and independent of the number of stocks)
+            G = Y @ Y.T
+            lam, Ug = np.linalg.eigh(G)                        # ascending
+            lam_k, U_k = lam[-k:][::-1], Ug[:, -k:][:, ::-1]
+            V = (Y.T @ U_k) / np.sqrt(lam_k)                   # unit-norm eigenvectors (Np x k)
+            Q = V / sd[:, None]                                # eigenportfolio weights Q_ij = v_ij / sigma_i
             f0 = ip - W + 1
             F = R0[f0:nxt][:, el] @ Q                          # eigenportfolio returns, rows f0..nxt-1
             n_pca[ip:nxt] = el.size
-            var_k[ip:nxt] = float((sv[:k] ** 2).sum() / (sv ** 2).sum())
+            var_k[ip:nxt] = float(lam_k.sum() / np.trace(G))
             Z = np.empty((W, k + 1))
             Z[:, 0] = 1.0
             for t in range(ip, nxt):
+                if not sched[t]:
+                    continue
                 cols = np.flatnonzero(Uv[t] & (cntW[t] >= W - int(p["max_missing"])))
                 if cols.size < 2 * k:
                     continue

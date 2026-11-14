@@ -1,0 +1,66 @@
+{
+ "start": "1975-01-02",
+ "end": "2020-12-31",
+ "n_years": 46.04,
+ "ann_ret": 0.04854227301587602,
+ "cagr": 0.04669808468278447,
+ "ann_vol": 0.07611848841495997,
+ "sharpe": 0.637719876296647,
+ "sortino": 0.9135902828274105,
+ "max_dd": -0.2648371533376346,
+ "calmar": 0.17632754352728672,
+ "max_dd_days": 2930,
+ "skew": -0.13137323513451676,
+ "kurt": 3.2368354479623935,
+ "hit_daily": 0.5290873050073257,
+ "hit_monthly": 0.5489130434782609,
+ "worst_day": -0.03498684417250649,
+ "worst_month": -0.1332870637687118,
+ "best_month": 0.19157994900262731,
+ "pos_years": "32/46",
+ "t_hac": 3.453982752825359,
+ "psr0": 0.9999918810978162,
+ "dsr": 0.9999918810978162,
+ "n_trials": 1,
+ "sr_subperiods": [
+  0.611,
+  1.029,
+  0.325
+ ],
+ "sr_ci_lo": 0.22678181090068353,
+ "sr_ci_hi": 1.0294780020675331,
+ "turnover_yr": 13.85189599743376,
+ "cost_drag_yr": 0.00692594799871688,
+ "avg_gross_lev": 2.8586636561781713,
+ "beta_spy": 0.000894489056222467,
+ "corr_spy": 0.0019950020600426346,
+ "alpha_t_hac": 3.448132735960075,
+ "strategy": "s05_principal_portfolios",
+ "version": "v1",
+ "universe": "kf",
+ "cost_mult": 1.0,
+ "lag": 1,
+ "n_assets": 25,
+ "params": {
+  "tables": [
+   "25_Portfolios_5x5_Daily|VW"
+  ],
+  "signals": [
+   "mom12_1"
+  ],
+  "est_start": "1963-07",
+  "min_months": 120,
+  "k_pep": 3,
+  "k_pap": 3,
+  "sleeves": [
+   "pep",
+   "pap"
+  ],
+  "shrink": true,
+  "pca": "none",
+  "demean": true,
+  "disp_norm": true,
+  "disp_months": 12,
+  "cov_days": 252
+ }
+}

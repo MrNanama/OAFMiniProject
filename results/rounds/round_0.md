@@ -4,23 +4,31 @@ score = 0.5*SR(2004-2020) + 0.5*min(SR 2004-2020, SR 2x cost, SR lag+1)
 
 | strategy | version | score | SR_04_20 | SR_dev | SR_2xcost | SR_lag+1 | ann_ret | vol | maxDD | calmar | turnover | cost | beta | sub | trials | lookahead | start |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| s02_factor_momentum | v1 | 0.36 | 0.36 | 1.06 | 0.76 | 1.03 | 8.6% | 8.0% | -28.6% | 0.30 | 23.43 | 2.3% | 0.00 | [1.252, 1.641, 0.327] | 1.00 | True | 1975-01-02 |
-| s10_turn_of_month | v1 | 0.19 | 0.23 | 0.23 | 0.15 | 0.45 | 1.1% | 4.8% | -10.8% | 0.09 | 18.34 | 0.4% | 0.09 | [0.089, 0.307, 0.275] | 1.00 | True | 2004-01-02 |
-| s01_gp_trend | - | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan |
-| s03_pca_statarb | - | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan |
-| s04_volume_attention | - | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan |
-| s05_principal_portfolios | - | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan |
-| s06_curve_pca_rv | - | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan |
-| s07_industry_seasonality | - | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan |
-| s08_ml_stock_ranker | - | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan |
-| s09_vrp_timing | - | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan | nan |
+| s09_vrp_timing | v1 | 0.63 | 0.71 | 0.71 | 0.60 | 0.55 | 4.5% | 6.3% | -8.8% | 0.49 | 3.92 | 0.4% | 0.16 | [1.241, 0.507, 0.349] | 1 | True | 2011-03-07 |
+| s02_factor_momentum | v2 | 0.56 | 0.68 | 1.06 | 0.45 | 1.00 | 9.0% | 8.5% | -30.8% | 0.29 | 14.96 | 1.5% | -0.02 | [0.959, 1.563, 0.659] | 2 | True | 1975-01-02 |
+| s10_turn_of_month | v2 | 0.54 | 0.82 | 0.82 | 0.62 | 0.26 | 4.2% | 5.2% | -9.8% | 0.43 | 50.40 | 1.0% | 0.06 | [0.861, 1.184, 0.459] | 6 | True | 2004-01-02 |
+| s05_principal_portfolios | v1 | 0.47 | 0.56 | 0.63 | 0.39 | 0.58 | 4.6% | 7.3% | -30.9% | 0.14 | 15.18 | 0.8% | 0.00 | [0.533, 0.84, 0.504] | 4 | True | 1975-01-02 |
+| s01_gp_trend | v1 | 0.24 | 0.31 | 0.31 | 0.18 | 0.38 | 3.3% | 10.8% | -20.0% | 0.14 | 27.13 | 0.8% | -0.06 | [0.24, 0.582, 0.096] | 3 | True | 2004-01-02 |
+| s07_industry_seasonality | v1 | 0.07 | 0.11 | 0.33 | 0.02 | 0.28 | 3.3% | 10.0% | -44.0% | 0.06 | 46.55 | 2.3% | -0.02 | [0.269, 0.585, 0.126] | 1 | True | 1975-01-02 |
+| s03_pca_statarb | v1 | -0.23 | -0.02 | 0.07 | -0.44 | 0.02 | 0.4% | 5.4% | -21.4% | 0.01 | 49.28 | 2.5% | 0.02 | [0.227, 0.119, -0.199] | 3 | True | 2000-01-03 |
+| s04_volume_attention | v1 | -0.41 | -0.26 | -0.30 | -0.57 | -0.30 | -1.9% | 6.5% | -47.1% | -0.05 | 29.27 | 1.5% | 0.01 | [-0.522, -0.199, -0.149] | 2 | True | 2000-01-03 |
+| s08_ml_stock_ranker | v1 | -0.43 | -0.43 | -0.23 | -0.41 | -0.28 | -2.1% | 9.0% | -68.4% | -0.04 | 27.54 | 1.4% | 0.13 | [0.636, -0.422, -0.886] | 1 | True | 2000-01-03 |
+| s06_curve_pca_rv | v1 | -0.84 | -0.49 | -0.49 | -1.20 | -0.61 | -1.1% | 2.2% | -15.1% | -0.07 | 31.28 | 0.9% | 0.01 | [-0.011, -1.055, -1.18] | 1 | True | 2007-07-17 |
 
 ## Weekly return correlations 2004-2020
 
-|                     |   s02_factor_momentum |   s10_turn_of_month |
-|:--------------------|----------------------:|--------------------:|
-| s02_factor_momentum |                     1 |                  -0 |
-| s10_turn_of_month   |                    -0 |                   1 |
+|                          |   s01_gp_trend |   s02_factor_momentum |   s03_pca_statarb |   s04_volume_attention |   s05_principal_portfolios |   s06_curve_pca_rv |   s07_industry_seasonality |   s08_ml_stock_ranker |   s09_vrp_timing |   s10_turn_of_month |
+|:-------------------------|---------------:|----------------------:|------------------:|-----------------------:|---------------------------:|-------------------:|---------------------------:|----------------------:|-----------------:|--------------------:|
+| s01_gp_trend             |           1    |                  0.36 |             -0.17 |                  -0.11 |                       0.18 |              -0.12 |                       0.08 |                 -0.06 |             0.03 |                0.16 |
+| s02_factor_momentum      |           0.36 |                  1    |             -0.25 |                  -0.15 |                       0.4  |              -0.06 |                       0.01 |                 -0.16 |             0    |               -0    |
+| s03_pca_statarb          |          -0.17 |                 -0.25 |              1    |                   0.14 |                      -0.17 |              -0.02 |                      -0.01 |                  0.19 |             0.01 |               -0.01 |
+| s04_volume_attention     |          -0.11 |                 -0.15 |              0.14 |                   1    |                      -0.13 |               0.04 |                       0.05 |                  0.02 |            -0.07 |               -0.02 |
+| s05_principal_portfolios |           0.18 |                  0.4  |             -0.17 |                  -0.13 |                       1    |              -0.06 |                       0    |                 -0.04 |             0.02 |               -0.05 |
+| s06_curve_pca_rv         |          -0.12 |                 -0.06 |             -0.02 |                   0.04 |                      -0.06 |               1    |                      -0.03 |                 -0.01 |            -0.01 |                0.01 |
+| s07_industry_seasonality |           0.08 |                  0.01 |             -0.01 |                   0.05 |                       0    |              -0.03 |                       1    |                 -0.01 |            -0.03 |               -0.02 |
+| s08_ml_stock_ranker      |          -0.06 |                 -0.16 |              0.19 |                   0.02 |                      -0.04 |              -0.01 |                      -0.01 |                  1    |             0.13 |                0.1  |
+| s09_vrp_timing           |           0.03 |                  0    |              0.01 |                  -0.07 |                       0.02 |              -0.01 |                      -0.03 |                  0.13 |             1    |                0.13 |
+| s10_turn_of_month        |           0.16 |                 -0    |             -0.01 |                  -0.02 |                      -0.05 |               0.01 |                      -0.02 |                  0.1  |             0.13 |                1    |
 
 ## Equal-risk combination of all active strategies (2005-2020, weights from trailing data)
-Sharpe 0.34, ann.ret 3.6%, vol 10.6%, maxDD -24.1%, calmar 0.13, subperiods [0.489, 0.131, 0.386], positive years 10/16
+Sharpe 0.48, ann.ret 2.9%, vol 6.0%, maxDD -20.2%, calmar 0.14, subperiods [0.989, 0.528, -0.219], positive years 10/16

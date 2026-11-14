@@ -3,55 +3,130 @@
  "version": "v2",
  "start": "1975-01-02",
  "end": "2020-12-31",
- "n_years": 47.13,
- "sharpe": 1.0375957031659129,
- "ann_ret": 0.08778147305143454,
- "ann_vol": 0.08460084480264869,
- "max_dd": -0.3080085850837201,
- "calmar": 0.2851576749029696,
- "sortino": 1.4777884048925762,
- "skew": -0.3065896898266133,
- "turnover_yr": 14.868121066666228,
- "cost_drag_yr": 0.014868121066666226,
- "avg_gross_lev": 2.779573556457304,
- "beta_spy": -0.018790675890422975,
- "corr_spy": -0.03727189222414524,
- "t_hac": 5.443679923684957,
- "psr0": 0.9999999999988164,
- "dsr": 0.9999999999596706,
+ "n_years": 46.04,
+ "sharpe": 1.0552841458599989,
+ "ann_ret": 0.09001816009657443,
+ "ann_vol": 0.08530229554734242,
+ "max_dd": -0.3080085850837202,
+ "calmar": 0.29285318761057616,
+ "sortino": 1.5060323518688525,
+ "skew": -0.28946841054033307,
+ "turnover_yr": 14.963766811045728,
+ "cost_drag_yr": 0.014963766811045729,
+ "fee_drag_yr": 0.03655294714321522,
+ "total_drag_yr": 0.05151671395426095,
+ "dsr_program": 0.8069276178012015,
+ "n_trials_program": 20,
+ "ruined": "None",
+ "avg_gross_lev": 2.7705740853199132,
+ "beta_spy": -0.018592101469834785,
+ "corr_spy": -0.03700208826537997,
+ "t_hac": 5.480299371680148,
+ "psr0": 0.9999999999991039,
+ "dsr": 0.9999999999688398,
  "n_trials": 2,
  "sr_subperiods": [
-  1.018,
-  1.404,
-  0.708
+  0.959,
+  1.563,
+  0.659
  ],
- "sr_ci_lo": 0.6492886715987601,
- "sr_ci_hi": 1.431282742952268,
+ "sr_ci_lo": 0.6381245918152123,
+ "sr_ci_hi": 1.4803645356823958,
  "pos_years": "35/46",
- "hit_monthly": 0.5942028985507246,
+ "hit_monthly": 0.5905797101449275,
  "n_assets": 20,
- "sharpe_2004_2020": 0.7473330659526177,
- "sharpe_cost2x": 0.8583225248062397,
- "sharpe_lag+1": 1.0037715988778204,
+ "sharpe_2004_2020": 0.678805749398929,
+ "sharpe_cost2x": 0.44949379090196706,
+ "sharpe_lag+1": 1.0036632667699092,
  "lookahead_passed": true,
  "lookahead_detail": {
-  "2008-06-30": {
-   "n_mismatch": 0,
+  "1950-02-28": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
    "first_mismatch": null,
    "rows_after_cut": 0,
-   "rows_compared": 21805
+   "rows_compared": 6990
   },
-  "2014-03-31": {
-   "n_mismatch": 0,
+  "1958-08-29": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
    "first_mismatch": null,
    "rows_after_cut": 0,
-   "rows_compared": 23305
+   "rows_compared": 9205
+  },
+  "1994-10-31": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 18307
+  },
+  "2005-03-24": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 20925
+  },
+  "2010-05-07": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 22214
+  },
+  "2012-03-01": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 22672
+  },
+  "2014-03-17": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 23184
+  },
+  "2016-11-09": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 23854
+  },
+  "2018-06-15": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 24255
   },
   "2019-09-30": {
-   "n_mismatch": 0,
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
    "first_mismatch": null,
    "rows_after_cut": 0,
-   "rows_compared": 24740
+   "rows_compared": 24579
+  },
+  "2019-12-05": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 24626
   }
  },
  "params": {
@@ -70,5 +145,5 @@
   "include_reversal": false,
   "signal": "continuous"
  },
- "runtime_s": 7.5
+ "runtime_s": 8.6
 }

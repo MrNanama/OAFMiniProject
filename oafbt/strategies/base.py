@@ -14,7 +14,10 @@ and a method
 
 Returns for the assets are taken from `asset_returns(ds)` (default: ds.xret for the columns of the weights);
 override it for synthetic assets (e.g. Ken French portfolios). The runner does sizing (vol target), costs,
-execution lag and metrics, so strategies should output *relative* weights (any scale).
+execution lag and metrics, so strategies should output *relative* weights (any scale; with vol_mode="strategy"
+the scale across dates matters and expresses the strategy's own risk timing).
+Only TRADABLE assets may carry weight (ETFs, _X twins, stocks, crypto, Ken French assets); futures, FX spot and
+indices are signal-only (ds.meta(...)['tradable']). Execution lag must be >= 1.
 """
 from __future__ import annotations
 
@@ -29,6 +32,8 @@ class Strategy:
     inspired_by: str = ""
     lag: int = 1
     vol_target: float | None = 0.10
+    vol_mode: str = "row"                 # "row": every rebalance row at target ex-ante vol; "strategy": keep the
+                                          # strategy's own exposure timing, scale by trailing realised vol
     lev_cap: float | None = None          # None -> config.LEV_CAP[universe]
     vol_window: int = 126
     vol_halflife: float = 42
