@@ -1,0 +1,141 @@
+{
+ "strategy": "s11_cross_asset_carry",
+ "version": "v2",
+ "start": "2007-03-02",
+ "end": "2020-12-31",
+ "n_years": 13.83,
+ "sharpe": 0.4251608027306576,
+ "ann_ret": 0.04461036289914619,
+ "ann_vol": 0.10492586008077319,
+ "max_dd": -0.34385631355444424,
+ "calmar": 0.11597278570954897,
+ "sortino": 0.6081633886314831,
+ "skew": -0.052687972752938274,
+ "turnover_yr": 6.293350242327704,
+ "cost_drag_yr": 0.0022148497598419637,
+ "fee_drag_yr": 0.0020870100371604312,
+ "total_drag_yr": 0.0043018597970023945,
+ "dsr_program": 0.013012374438117482,
+ "n_trials_program": 30,
+ "ruined": "None",
+ "avg_gross_lev": 0.9924282029338026,
+ "beta_spy": 0.024830846623408957,
+ "corr_spy": 0.04897959096957209,
+ "t_hac": 1.5062499586497222,
+ "psr0": 0.9428557507111818,
+ "dsr": 0.6510020598871484,
+ "n_trials": 5,
+ "sr_subperiods": [
+  1.04,
+  -0.0,
+  0.268
+ ],
+ "sr_ci_lo": -0.09621286196060452,
+ "sr_ci_hi": 0.9776405493207402,
+ "pos_years": "7/14",
+ "hit_monthly": 0.5963855421686747,
+ "n_assets": 8,
+ "sharpe_2004_2020": 0.4251608027306576,
+ "sharpe_cost2x": 0.384200572537734,
+ "sharpe_lag+1": 0.4225076228582264,
+ "lookahead_passed": true,
+ "lookahead_detail": {
+  "2005-03-24": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 0
+  },
+  "2010-05-07": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 813
+  },
+  "2011-01-31": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 998
+  },
+  "2012-03-01": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 1271
+  },
+  "2012-03-30": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 1292
+  },
+  "2014-03-17": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 1783
+  },
+  "2016-11-09": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 2453
+  },
+  "2017-02-28": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 2527
+  },
+  "2018-06-15": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 2854
+  },
+  "2019-12-05": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 3225
+  },
+  "2020-10-30": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 3453
+  }
+ },
+ "params": {
+  "window": 252,
+  "classes": [
+   "commod"
+  ],
+  "min_assets": 3,
+  "vol_halflife": 63
+ },
+ "runtime_s": 4.5
+}

@@ -111,7 +111,7 @@ def week_ends(cal: pd.DatetimeIndex) -> pd.DatetimeIndex:
 # --------------------------------------------------------------------------------------------- strategy
 class GPTrend(Strategy):
     name = "s01_gp_trend"
-    version = "v1"
+    version = "v2"
     universe = "multiasset"
     thesis = ("Asset-class trends persist (time-series momentum). A GP on each asset's vol-normalised price path gives "
               "the posterior drift and its uncertainty; Bayesian evidence (not in-sample Sharpe) weights trend horizons "
@@ -121,8 +121,8 @@ class GPTrend(Strategy):
     def default_params(self):
         return {
             "assets": ASSETS,
-            "window": 252,                    # trailing trading days in each GP window (asset enters after ~1y)
-            "lengthscales": [21, 63, 126, 252],   # RBF lengthscales: 1/3/6/12-month trends (MOP 2012, HOP 2017)
+            "window": 504,                    # v2: 2y GP window so the 12-month model is not truncated (v1: 252)
+            "lengthscales": [63, 126, 252],   # v2: drop the 1-month model (noise/cost after 2008; v1: 21/63/126/252)
             "prior_sr": [0.25, 0.5, 1.0, 2.0, 4.0],   # grid (log-uniform prior) for the drift sd in annualised
                                               # Sharpe units, integrated out by BMA (sm = sr / sqrt(252))
             "horizon": [2, 6],                # forecast the mean drift over sessions t+2..t+6 (lag-1 execution, 1w hold)

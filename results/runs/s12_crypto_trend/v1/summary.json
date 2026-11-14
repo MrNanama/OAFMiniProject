@@ -1,0 +1,146 @@
+{
+ "strategy": "s12_crypto_trend",
+ "version": "v1",
+ "start": "2015-09-29",
+ "end": "2020-12-31",
+ "n_years": 5.26,
+ "sharpe": 1.7646551712976462,
+ "ann_ret": 0.1887442260378896,
+ "ann_vol": 0.1069581349987464,
+ "max_dd": -0.13352858459425843,
+ "calmar": 1.5036014526796564,
+ "sortino": 2.7538030143167496,
+ "skew": 0.062433761217443616,
+ "turnover_yr": 1.0495827459806546,
+ "cost_drag_yr": 0.001574374118970982,
+ "fee_drag_yr": 0.0,
+ "total_drag_yr": 0.001574374118970982,
+ "dsr_program": 0.954973845372612,
+ "n_trials_program": 31,
+ "ruined": "None",
+ "avg_gross_lev": 0.14494244378952995,
+ "beta_spy": -0.03773895609994697,
+ "corr_spy": -0.06593101442563797,
+ "t_hac": 3.7297301563042518,
+ "psr0": 0.9999651926288817,
+ "dsr": 0.9999651926288817,
+ "n_trials": 1,
+ "sr_subperiods": [
+  2.617,
+  0.928,
+  1.589
+ ],
+ "sr_ci_lo": 0.7687085563163027,
+ "sr_ci_hi": 2.7145216736608084,
+ "pos_years": "5/6",
+ "hit_monthly": 0.609375,
+ "n_assets": 2,
+ "sharpe_2004_2020": 1.7646551712976462,
+ "sharpe_cost2x": 1.749659377532468,
+ "sharpe_lag+1": 1.7338604478338837,
+ "lookahead_passed": true,
+ "lookahead_detail": {
+  "2005-03-24": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 0
+  },
+  "2010-05-07": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 0
+  },
+  "2012-03-01": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 0
+  },
+  "2014-03-17": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 0
+  },
+  "2016-11-09": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 289
+  },
+  "2017-09-22": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 507
+  },
+  "2018-02-09": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 603
+  },
+  "2018-06-15": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 690
+  },
+  "2019-09-27": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 1013
+  },
+  "2019-12-05": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 1061
+  },
+  "2020-12-04": {
+   "hold_mismatch": 0,
+   "value_mismatch": 0,
+   "returns_mismatch": 0,
+   "first_mismatch": null,
+   "rows_after_cut": 0,
+   "rows_compared": 1313
+  }
+ },
+ "params": {
+  "assets": [
+   "BTC-USD",
+   "ETH-USD"
+  ],
+  "lookbacks": [
+   21,
+   63,
+   126,
+   252
+  ],
+  "min_hist": 252
+ },
+ "runtime_s": 4.2
+}

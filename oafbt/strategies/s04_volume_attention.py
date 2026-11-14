@@ -50,7 +50,7 @@ import numpy as np
 import pandas as pd
 
 from .base import Strategy
-from .utils import period_ends
+from .utils import period_ends, keep_rows, long_short
 
 
 # ------------------------------------------------------------------ private helpers
@@ -235,4 +235,45 @@ class VolumeAttention(Strategy):
         return out.copy()
 
 
-STRATEGY = VolumeAttention
+# v1 class kept for reference: STRATEGY = VolumeAttention
+
+class ExpectedAttention(Strategy):
+    """v2 (volume TYPE pivot): the earnings-announcement / expected-attention premium (Frazzini & Lamont 2007;
+    Barber, De George, Lehavy & Trueman 2013). Stocks earn more in months in which they are EXPECTED to announce
+    earnings (attention-driven buying, risk of the announcement). We have no earnings calendar, but announcements
+    recur quarterly and come with volume spikes, so a stock's expected announcement month is predictable from its
+    OWN volume seasonality: abnormal dollar volume 3, 6, 9 and 12 months before the target month (same phase of the
+    quarterly cycle) minus its abnormal volume in the other months of the past year. Long the top quintile
+    (expected announcers), short the bottom quintile; equal weight; monthly. v1 (high-volume return premium,
+    Gervais et al. 2001) had no gross premium in S&P 500 large caps (SR -0.26)."""
+    name = "s04_volume_attention"
+    version = "v2"
+    universe = "stocks"
+    thesis = "Expected earnings announcements (predicted from quarterly volume seasonality) earn an attention premium."
+    inspired_by = "Volume Filters deck (volume as information about who trades / attention)"
+
+    def default_params(self):
+        return {"q": 0.2, "min_months": 12}
+
+    def target_weights(self, ds):
+        p = self.params
+        U = ds.stock_universe()
+        cols = list(U.columns)
+        dv = ds.panel("close", cols) * ds.panel("volume", cols)
+        me = period_ends(U.index, "M")
+        grp = np.searchsorted(me, dv.index)
+        ok = grp < len(me)
+        mdv = dv[ok].groupby(grp[ok]).sum(min_count=10)
+        mdv.index = me[: len(mdv)]
+        lv = np.log(mdv.where(mdv > 0))
+        av = lv - lv.rolling(12, min_periods=p["min_months"]).median().shift(1)     # abnormal vs prior year
+        phase = sum(av.shift(k - 1) for k in (3, 6, 9, 12)) / 4.0                    # months t+1-3k, known at t
+        allm = av.rolling(12, min_periods=p["min_months"]).sum()
+        other = (allm - av.shift(2) - av.shift(5) - av.shift(8) - av.shift(11)) / 8.0
+        sig = (phase - other).where(U.reindex(mdv.index).fillna(False))
+        W = long_short(sig, q=p["q"])
+        W = W.reindex(U.index)
+        return keep_rows(W, W.dropna(how="all").index)
+
+
+STRATEGY = ExpectedAttention

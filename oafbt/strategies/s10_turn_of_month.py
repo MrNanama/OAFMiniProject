@@ -1,6 +1,8 @@
 """s10 - Month-turn flow effects in bonds and equities (wildcard: flows/calendar).
 
 v1: long SPY over trading days -1..+3 around month end (classic turn-of-month). Dev SR 0.23.
+v3: + equity exposure over scheduled FOMC announcement days (pre-announcement drift, Lucca & Moench 2015; dev
+    event study: SPY +21 bps t=2.1 in 1994-2007 and +35 bps t=2.8 in 2008-2020; schedule published a year ahead).
 v2: two flow-driven sleeves that rotate at the month turn:
   * Treasuries, days -2 and -1: bond indices extend duration at month end, so index-tracking money must buy
     longer bonds on the last days of the month ("index extension" demand). Dev event study 2004-2020 (raw price
@@ -29,14 +31,15 @@ def month_positions(cal: pd.DatetimeIndex):
 
 class MonthTurnFlows(Strategy):
     name = "s10_turn_of_month"
-    version = "v2"
+    version = "v3"
     universe = "multiasset"
     thesis = "Month-end bond index extension and month-start equity inflows create predictable calendar returns."
     inspired_by = "wildcard (flows)"
 
     def default_params(self):
         return {"bond_assets": ["TLT", "IEF"], "bond_days_from_end": [-2, -1],
-                "equity_assets": ["SPY"], "equity_days_from_start": [1, 2, 3], "vol_halflife": 63}
+                "equity_assets": ["SPY"], "equity_days_from_start": [1, 2, 3], "vol_halflife": 63,
+                "fomc_day": True}
 
     def target_weights(self, ds):
         p = self.params
@@ -47,6 +50,8 @@ class MonthTurnFlows(Strategy):
         fe, fs = month_positions(full)
         bond_on = fe.isin(p["bond_days_from_end"])       # want exposure to THESE days' returns
         eq_on = fs.isin(p["equity_days_from_start"])
+        if p.get("fomc_day"):                             # scheduled FOMC announcement day (Lucca & Moench 2015)
+            eq_on = eq_on | pd.Series(full.isin(ds.fomc_dates()), index=full)
         # exposure over day t's return is held from the close of t-1, i.e. executed at close t-1, i.e. DECIDED
         # at close t-2 (engine lag = 1). Shift the flags back by 2 sessions on the published calendar.
         bond_dec = bond_on.shift(-2, fill_value=False).reindex(cal)

@@ -20,13 +20,15 @@ TABLE = "49_Industry_Portfolios_daily|VW"
 
 class IndustrySeasonality(Strategy):
     name = "s07_industry_seasonality"
-    version = "v1"
+    version = "v2"
     universe = "kf"
     thesis = "Industries repeat their calendar-month relative performance (return seasonality)."
     inspired_by = "cross-sectional momentum deck (momentum type, at annual lags)"
 
     def default_params(self):
-        return {"years": 20, "min_obs": 10, "n_side": 10}
+        # v2: turnover buffer (enter in the top/bottom 10, keep until the rank leaves the top/bottom 15) - cost
+        # control in the spirit of Novy-Marx & Velikov (2016); v1 paid 2.3%/yr at 47x turnover.
+        return {"years": 20, "min_obs": 10, "n_side": 10, "exit_side": 15}
 
     def asset_returns(self, ds, columns):
         return kf_portfolio_returns(ds, TABLE, prefix="KF:P:49VW").reindex(columns=columns)
@@ -57,10 +59,27 @@ class IndustrySeasonality(Strategy):
         sig = (same_mean - other_mean).where(M.notna())
         rk = sig.rank(axis=1, ascending=False)
         nvalid = sig.notna().sum(axis=1)
-        n = p["n_side"]
-        W = (rk <= n).astype(float) / n - (rk > (nvalid - n).values[:, None]).astype(float) / n
-        W = W.where(sig.notna(), 0.0)
-        W = W[nvalid >= 2 * n]
+        n, e = p["n_side"], p.get("exit_side", p["n_side"])
+        top_in, top_keep = rk <= n, rk <= e
+        bot_in, bot_keep = rk > (nvalid - n).values[:, None], rk > (nvalid - e).values[:, None]
+        state = np.zeros(sig.shape)
+        prev = np.zeros(sig.shape[1])
+        TI, TK, BI, BK = top_in.to_numpy(), top_keep.to_numpy(), bot_in.to_numpy(), bot_keep.to_numpy()
+        valid = (nvalid >= 2 * n).to_numpy()
+        for i in range(len(sig)):
+            if not valid[i]:
+                prev = np.zeros(sig.shape[1])
+                continue
+            cur = np.where(TI[i], 1.0, np.where(BI[i], -1.0, 0.0))
+            keep_long = (prev > 0) & TK[i]
+            keep_short = (prev < 0) & BK[i]
+            cur = np.where(keep_long, 1.0, np.where(keep_short, -1.0, cur))
+            state[i] = cur
+            prev = cur
+        S = pd.DataFrame(state, index=sig.index, columns=sig.columns)
+        L, Sh = (S > 0).sum(axis=1), (S < 0).sum(axis=1)
+        W = S.clip(lower=0).div(L.replace(0, np.nan), axis=0) + S.clip(upper=0).div(Sh.replace(0, np.nan), axis=0)
+        W = W.fillna(0.0)[valid]
         W = W.reindex(D.index)
         return keep_rows(W, W.dropna(how="all").index)
 

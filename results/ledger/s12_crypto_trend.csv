@@ -1,0 +1,2 @@
+ts,strategy,version,tag,phash,params,sharpe,ann_ret,max_dd,turnover_yr,note
+2026-11-14T19:29:30+00:00,s12_crypto_trend,v1,dev,6108fb29e0,"{""assets"": [""BTC-USD"", ""ETH-USD""], ""lookbacks"": [21, 63, 126, 252], ""min_hist"": 252}",1.7646551712976462,0.1887442260378896,-0.13352858459425843,1.0495827459806546,v1 candidate: long-only multi-horizon TSMOM on BTC/ETH

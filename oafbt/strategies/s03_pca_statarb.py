@@ -79,7 +79,7 @@ def _ar1(X: np.ndarray):
 # ------------------------------------------------------------------ strategy
 class PCAStatArb(Strategy):
     name = "s03_pca_statarb"
-    version = "v1"
+    version = "v2"
     universe = "stocks"
     thesis = ("Idiosyncratic (factor-residual) price moves of large US stocks partly reflect temporary liquidity "
               "demand and overreaction, so they mean-revert over days to weeks (Lehmann 1990; Lo & MacKinlay 1990; "
@@ -101,7 +101,7 @@ class PCAStatArb(Strategy):
                 "reg_window": 60,       # residual regression / OU estimation window (A&L: 60 days)
                 "max_missing": 3,       # max missing returns in the 60d window (filled with 0)
                 "tau_max": 30,          # trade only if mean-reversion time 1/kappa < 30 days (kappa > 252/30)
-                "s_open": 1.25,         # A&L entry band
+                "s_open": 2.0,          # v2: stronger entry band (v1 1.25: edge per round trip <= cost after 2008)
                 "s_close_long": 0.0,    # exit at equilibrium (A&L: close long at s > -0.50, short at s < +0.75)
                 "s_close_short": 0.0,
                 "trade_freq": "W",      # decide on the first trading day of each week ("D" = daily, as A&L)

@@ -32,13 +32,16 @@ def _fast_beta(R: pd.DataFrame, m: pd.Series, w: int = 252, minp: int = 150):
 
 class MLStockRanker(Strategy):
     name = "s08_ml_stock_ranker"
-    version = "v1"
+    version = "v2"
     universe = "stocks"
     thesis = "A regularised learner combines many weak price/volume anomalies better than any single one."
     inspired_by = "ML / regularised walk-forward learning (Macro Momentum deck methodology)"
 
     def default_params(self):
-        return {"min_train_years": 3, "q": 0.1, "gbm_iter": 150, "gbm_depth": 3, "ridge_alpha": 10.0}
+        # v2: target = next-month RESIDUAL return (minus beta x SPY), rolling 10-year training window (adapts to
+        # the post-2007 regime where v1 decayed), beta-neutral book (v1 had beta 0.13 and a -68% DD in 2009).
+        return {"min_train_years": 3, "q": 0.1, "gbm_iter": 150, "gbm_depth": 3, "ridge_alpha": 10.0,
+                "train_years": 10, "residual_target": True, "beta_neutral": True}
 
     def features(self, ds):
         U = ds.stock_universe()
@@ -75,6 +78,13 @@ class MLStockRanker(Strategy):
         names = list(F) + ["seas"]
         X_by_date, y_by_date, idx_by_date = {}, {}, {}
         nxt = mret.shift(-1)                                      # next month's return (label)
+        spy_d = ds.ret(["SPY"])["SPY"].reindex(U.index)
+        grp = np.searchsorted(me, spy_d.index)
+        okg = grp < len(me)
+        spym = np.expm1(np.log1p(spy_d[okg]).groupby(grp[okg]).sum(min_count=15))
+        spym.index = me[: len(spym)]
+        spy_next = spym.shift(-1)
+        bshr = 0.6 * F["beta"] + 0.4
         for d in me:
             elig = U.loc[d]
             elig = elig[elig].index
@@ -88,6 +98,8 @@ class MLStockRanker(Strategy):
             X_by_date[d] = df[names].to_numpy()
             idx_by_date[d] = elig
             y = nxt.loc[d, elig] if d in nxt.index else pd.Series(np.nan, index=elig)
+            if p.get("residual_target"):
+                y = y - F["beta"].loc[d, elig].fillna(1.0) * (spy_next.loc[d] if d in spy_next.index else np.nan)
             y_by_date[d] = (y.rank(pct=True) - 0.5).to_numpy()
         dates = sorted(X_by_date)
         W = {}
@@ -95,6 +107,8 @@ class MLStockRanker(Strategy):
         for i, d in enumerate(dates):
             refit = model is None or d.month == 12
             train = [t for t in dates[:i]]                         # label of t (month after t) is observed at d
+            if p.get("train_years"):
+                train = train[-12 * p["train_years"]:]
             if refit and len(train) >= 12 * p["min_train_years"]:
                 Xtr = np.vstack([X_by_date[t] for t in train])
                 ytr = np.concatenate([y_by_date[t] for t in train])
@@ -115,6 +129,11 @@ class MLStockRanker(Strategy):
             top, bot = pr > 1 - p["q"], pr <= p["q"]
             w[top] = 1.0 / top.sum()
             w[bot] = -1.0 / bot.sum()
+            if p.get("beta_neutral"):
+                bd = bshr.loc[d, idx_by_date[d]].fillna(1.0).clip(lower=0.3)
+                bl, bh = (w[top] * bd[top]).sum(), (-w[bot] * bd[bot]).sum()
+                w[top] = w[top] / bl
+                w[bot] = w[bot] / bh
             W[d] = w
         out = pd.DataFrame(W).T.reindex(columns=U.columns).fillna(0.0)
         out = out.reindex(U.index)

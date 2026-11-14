@@ -1,0 +1,2 @@
+ts,strategy,version,tag,phash,params,sharpe,ann_ret,max_dd,turnover_yr,note
+2026-11-14T19:32:27+00:00,s13_residual_momentum,v1,dev,eebf9e6c79,"{""window"": 36, ""min_months"": 24, ""formation"": 11, ""skip"": 1, ""q"": 0.1}",-0.0572138237218063,-0.005266314891880531,-0.41528856750745835,17.440593836127576,candidate v1 (replacement for s03)

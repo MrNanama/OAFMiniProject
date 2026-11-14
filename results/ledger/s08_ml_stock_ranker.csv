@@ -1,2 +1,3 @@
 ts,strategy,version,tag,phash,params,sharpe,ann_ret,max_dd,turnover_yr,note
 2026-11-14T19:21:32+00:00,s08_ml_stock_ranker,v1,dev,b91789654b,"{""min_train_years"": 3, ""q"": 0.1, ""gbm_iter"": 150, ""gbm_depth"": 3, ""ridge_alpha"": 10.0}",-0.23490078883245322,-0.021212949355811063,-0.6840396711824124,27.536050842939424,"v1 initial (spec): GBM+ridge rank blend, 15 features, decile L/S monthly"
+2026-11-14T19:34:05+00:00,s08_ml_stock_ranker,v2,dev,2e143b7f1a,"{""min_train_years"": 3, ""q"": 0.1, ""gbm_iter"": 150, ""gbm_depth"": 3, ""ridge_alpha"": 10.0, ""train_years"": 10, ""residual_target"": true, ""beta_neutral"": true}",0.4714945695223788,0.042006321695447824,-0.24603532604013256,24.572630925156375,"v2: residual target, rolling 10y training, beta-neutral"

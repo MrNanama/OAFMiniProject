@@ -1,0 +1,70 @@
+{
+ "start": "2004-01-02",
+ "end": "2020-12-31",
+ "n_years": 16.98,
+ "ann_ret": 0.05207956001298761,
+ "cagr": 0.05186478292629104,
+ "ann_vol": 0.05491102827499488,
+ "sharpe": 0.9484353443933475,
+ "sortino": 1.4030402999106677,
+ "max_dd": -0.10899427937182105,
+ "calmar": 0.4758486704550841,
+ "max_dd_days": 565,
+ "skew": -0.772981838406569,
+ "kurt": 27.995840647500415,
+ "hit_daily": 0.1497663551401869,
+ "hit_monthly": 0.6421568627450981,
+ "worst_day": -0.056119432093423446,
+ "worst_month": -0.08446230779891306,
+ "best_month": 0.06037624588145096,
+ "pos_years": "15/17",
+ "t_hac": 3.7446116680866397,
+ "psr0": 0.9999193573867676,
+ "dsr": 0.9925411845176474,
+ "n_trials": 7,
+ "sr_subperiods": [
+  1.057,
+  1.29,
+  0.522
+ ],
+ "sr_ci_lo": 0.4694541512604921,
+ "sr_ci_hi": 1.4918750469519695,
+ "turnover_yr": 59.751047865843006,
+ "cost_drag_yr": 0.011950209573168601,
+ "fee_drag_yr": 0.00021719524536026482,
+ "total_drag_yr": 0.012167404818528866,
+ "n_trials_program": 25,
+ "dsr_program": 0.43920873525820764,
+ "avg_gross_lev": 0.2556066437927233,
+ "beta_spy": 0.07198511734690641,
+ "corr_spy": 0.25202499562591113,
+ "alpha_t_hac": 3.328073146065865,
+ "strategy": "s10_turn_of_month",
+ "version": "v3",
+ "universe": "multiasset",
+ "cost_mult": 1.0,
+ "lag": 1,
+ "n_assets": 3,
+ "ruined": "None",
+ "vol_mode": "row",
+ "params": {
+  "bond_assets": [
+   "TLT",
+   "IEF"
+  ],
+  "bond_days_from_end": [
+   -2,
+   -1
+  ],
+  "equity_assets": [
+   "SPY"
+  ],
+  "equity_days_from_start": [
+   1,
+   2,
+   3
+  ],
+  "vol_halflife": 63,
+  "fomc_day": true
+ }
+}

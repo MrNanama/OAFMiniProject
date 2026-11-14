@@ -47,3 +47,21 @@ Equal-risk combination of all 10: Sharpe 0.48 (2005-2020).
 * s04: pivot within the volume type to expected attention (earnings-cycle volume seasonality).
 * s03, s08: one substantive attempt each; replaced in round 2 if still not positive.
 * Others: targeted improvements (costs, drawdown control, additional sleeves with ex-ante rationale).
+
+## Round 1 results
+Leaderboard: `results/rounds/round_1.md`. **Equal-risk combination of the 10 active strategies: Sharpe 1.28
+(2005-2020), 12.1%/yr at 9.4% vol, max DD -12.2%, 15/16 positive years** (round 0: 0.48).
+| change | before -> after (SR 2004-20) | why |
+|---|---|---|
+| s10 v3: + scheduled-FOMC-day SPY sleeve | 0.82 -> 0.95 | pre-announcement drift, positive in both halves of the dev sample |
+| s06 retired -> s11 cross-asset carry | -0.49 -> 0.43 (v2) | carry inferred from prices; v1 all classes -0.03; per-class diagnostics: commodity roll yield +0.36, FX -0.44, equity div-yield -0.12; v2 = commodities only, 1y window (in-sample class choice, logged) |
+| s04 -> v2 expected attention, then retired | -0.26 -> -0.08 | second volume-type idea also has no net premium in large caps |
+| s03 -> v2 stricter entry, then retired | -0.02 -> 0.02 | cost wall is structural |
+| new s12 crypto trend (replaces s04) | 1.76 (2015-20) | long-only multi-horizon TSMOM on BTC/ETH; short sample, CI 0.77-2.71 |
+| new s14 BAB (replaces s03) | 0.28 | beat the other candidate, s13 residual momentum (-0.14, rejected) |
+| s08 v2: residual target, rolling 10y fit, beta-neutral | -0.43 -> 0.33 | DD -68% -> -25% |
+| s01 v2: drop 1-month GP model, 2y window | 0.31 -> 0.32 | lower turnover (27x -> 20x), little change |
+| s07 v2: rank buffer | 0.11 -> 0.06 | turnover barely moves (seasonality reshuffles every month) -> replacement candidate |
+| s02, s05, s09 | unchanged | drawdowns are pre-1983 (few factors); no change warranted |
+Lesson: in S&P 500 large caps, simple price/volume signals (reversal, volume, residual momentum, raw ML) do not
+survive costs after 2007; what works there is low-turnover, beta-neutral construction (s08 v2, s14).

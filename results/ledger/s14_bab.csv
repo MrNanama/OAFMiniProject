@@ -1,0 +1,3 @@
+ts,strategy,version,tag,phash,params,sharpe,ann_ret,max_dd,turnover_yr,note
+2026-11-14T19:32:46+00:00,s14_bab,v1,dev,8bb1cc0f3d,"{""beta_window"": 252, ""shrink"": 0.6}",0.2016136531484986,0.018670505844427854,-0.20659395396800995,3.386269171121948,candidate v1 (replacement for s03)
+2026-11-14T19:36:29+00:00,s14_bab,v1,dev,8bb1cc0f3d,"{""beta_window"": 252, ""shrink"": 0.6}",0.2016136531484986,0.018670505844427854,-0.20659395396800995,3.386269171121948,v1 full check run
