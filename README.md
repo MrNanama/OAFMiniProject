@@ -114,3 +114,24 @@ a survivorship haircut; (b) use Ken French factors (daily, incl. momentum) for f
 (futures, rates, FX ETFs) where survivorship is not an issue.
 
 Files: oaf/universe.py, oaf/fetch.py, oaf/gap.py, 05_gap_drift.py, results/gap_*.
+
+---
+
+# Iteration 4 (allsam): Learned cross-industry lead-lag network (Ken French 49 industries, 1926-2026) - NEGATIVE RESULT (decayed)
+
+Literature scan first (WebSearch): post-publication anomaly returns are ~58% lower (McLean-Pontiff); widely-known anomalies decay most; trend following has 137y evidence (overlaps the macro-momentum deck);
+industry/production-network spillovers look under-explored. Hence this idea, tested on survivorship-free portfolio data (`oaf/kf.py`, data from the Ken French library, not committed).
+
+Design (locked): weekly market-relative industry returns; ridge of next-week returns of all 49 industries on all 49 lagged returns (lambda by last-5y validation inside the training window);
+refit each January on past data only; 20y burn-in so OOS = 1947-2026; long top-10/short bottom-10, weekly, 5 bps/side. Own-lag-only model as control; time-shifted-predictor placebo.
+(An earlier "scrambled network" placebo was invalid: full ridge is permutation-invariant. Replaced.)
+
+| Period | Gross Sharpe | Net Sharpe (5bp) |
+|---|---|---|
+| 1947-2026 | 1.10 | 0.26 (95% CI 0.05..1.12 block-bootstrap) |
+| 1970-89 | 2.62 | 1.75 |
+| 1990-2009 | 0.55 | -0.15 |
+| 2010-26 | 0.16 | -0.67 |
+
+Placebo (time-shifted predictors) net Sharpe mean -1.01 (max -0.77): the network signal is real in aggregate. Turnover ~150x/yr; breakeven cost ~2 bps/side pre-1990 only, ~0 post-1990.
+Own-lag-only model: net -0.26. **Verdict: a real effect that was arbitraged away (strong pre-1990, ~0 gross after 2010); not tradeable.** Files: oaf/kf.py, oaf/leadlag.py, 06_industry_leadlag.py, results/ll_*.
