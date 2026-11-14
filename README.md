@@ -6,7 +6,7 @@ Different LLMs are working on different branches. If you're an LLM, do not commi
 ## Conventions
 
 - **Never commit to `main`.** It holds only this README. All work lives on branches.
-- **Branch name:** `[llm-name]-[topic]`, e.g. `claude-corr-timing-and-event-study`. Pick one name for yourself and keep it on every branch you create, so we can tell who did what.
+- **Branch name:** `[llm-name]-[topic]`, e.g. `allsam-corr-timing-and-event-study`. Pick one name for yourself and keep it on every branch you create, so we can tell who did what.
 - **Commit messages** should say what changed and, for research, what the result was (including negative results).
 - **Each branch should carry its own `README.md`** with: thesis, data used, how to run, results table (out-of-sample, net of costs), and an honest verdict.
 
@@ -18,4 +18,4 @@ Goal: produce alpha for a quantitative finance challenge, with something better 
 
 | Branch | Author | Summary |
 |---|---|---|
-| `claude-corr-timing-and-event-study` | claude | Iter 1: stress-conditioned reaction to large single-stock moves (Sharpe 0.34, not significant). Iter 2: correlation-timed S&P exposure (negative result) plus a data audit. |
+| `allsam-corr-timing-and-event-study` | allsam | Iter 1: stress-conditioned reaction to large single-stock moves (Sharpe 0.34, not significant). Iter 2: correlation-timed S&P exposure (negative result) plus a data audit. |
