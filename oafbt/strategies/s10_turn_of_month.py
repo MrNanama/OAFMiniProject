@@ -33,6 +33,7 @@ class MonthTurnFlows(Strategy):
     name = "s10_turn_of_month"
     version = "v3"
     universe = "multiasset"
+    calendar_timed = True     # trades scheduled in advance (MOC orders): lag+1 test not meaningful
     thesis = "Month-end bond index extension and month-start equity inflows create predictable calendar returns."
     inspired_by = "wildcard (flows)"
 

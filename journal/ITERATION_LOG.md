@@ -65,3 +65,14 @@ Leaderboard: `results/rounds/round_1.md`. **Equal-risk combination of the 10 act
 | s02, s05, s09 | unchanged | drawdowns are pre-1983 (few factors); no change warranted |
 Lesson: in S&P 500 large caps, simple price/volume signals (reversal, volume, residual momentum, raw ML) do not
 survive costs after 2007; what works there is low-turnover, beta-neutral construction (s08 v2, s14).
+
+## Round 2 results
+**Equal-risk combination: Sharpe 1.41 (2005-2020), 12.0%/yr, vol 8.5%, max DD -9.7%, subperiods 1.41/1.78/1.09,
+15/16 positive years** (round 1: 1.28). Leaderboard: `results/rounds/round_2.md`.
+* s07 seasonality retired -> NEW s15 rebalancing flows (SR 0.38): month-to-date stock-minus-bond performance
+  predicts the spread on days -2..-1 (contrarian; balanced-fund rebalancing pressure) and +1..+2 (reversal). The
+  event study that motivated it is logged (corr -0.25 / +0.33 in 2007-2020; quarter-ends -0.26 / -0.20 in both
+  halves).
+* s14 v2 betting-against-correlation (within vol quintiles): 0.28 -> 0.33 (2000-20: 0.20 -> 0.34).
+* Ranking score: the lag+1 test is skipped for calendar-timed strategies (s10, s15), whose trades are scheduled in
+  advance and executed as market-on-close orders.

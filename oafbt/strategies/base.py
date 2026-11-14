@@ -31,6 +31,8 @@ class Strategy:
     thesis: str = ""
     inspired_by: str = ""
     lag: int = 1
+    calendar_timed: bool = False          # True: trades are scheduled in advance (calendar/event), executed at
+                                          # the scheduled close; the lag+1 robustness test does not apply
     vol_target: float | None = 0.10
     vol_mode: str = "row"                 # "row": every rebalance row at target ex-ante vol; "strategy": keep the
                                           # strategy's own exposure timing, scale by trailing realised vol

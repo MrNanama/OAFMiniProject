@@ -43,12 +43,15 @@ def main(rnd: int):
                      "trials": s.get("n_trials"), "lookahead": s.get("lookahead_passed"),
                      "start": s.get("start")})
     df = pd.DataFrame(rows).set_index("strategy")
-    df["score"] = df[["SR_04_20", "SR_2xcost", "SR_lag+1"]].min(axis=1) * 0.5 + df["SR_04_20"] * 0.5
+    from oafbt.strategies.registry import load
+    cal = {n: getattr(load(n), "calendar_timed", False) for n in df.index if df.loc[n, "version"] != "-"}
+    lagcol = df["SR_lag+1"].where(~df.index.map(lambda n: cal.get(n, False)), np.nan)
+    df["score"] = pd.concat([df["SR_04_20"], df["SR_2xcost"], lagcol], axis=1).min(axis=1) * 0.5 + df["SR_04_20"] * 0.5
     out = C.RESULTS / "rounds"
     out.mkdir(parents=True, exist_ok=True)
     df.to_csv(out / f"round_{rnd}.csv")
     lines = [f"# Round {rnd} leaderboard (dev data only, net of costs)\n",
-             "score = 0.5*SR(2004-2020) + 0.5*min(SR 2004-2020, SR 2x cost, SR lag+1)\n"]
+             "score = 0.5*SR(2004-2020) + 0.5*min(SR 2004-2020, SR 2x cost, SR lag+1); lag+1 skipped for calendar-timed strategies\n"]
     cols = ["version", "score", "SR_04_20", "SR_dev", "SR_2xcost", "SR_lag+1", "ann_ret", "vol", "maxDD", "calmar",
             "turnover", "cost", "beta", "sub", "trials", "lookahead", "start"]
     lines.append("| strategy | " + " | ".join(cols) + " |")
