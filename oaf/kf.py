@@ -26,3 +26,12 @@ def factors():
     f = _blocks(D + "F-F_Research_Data_Factors_daily.csv")[0]
     mom = _blocks(D + "F-F_Momentum_Factor_daily.csv")[0]; mom.columns = ["UMD"]
     return f.join(mom, how="left")
+
+def factors8():
+    """MKT-RF,SMB,HML,RMW,CMA,RF (2x3 5-factor, from 1963) + UMD + ST_Rev + LT_Rev; plus 3-factor (from 1926) for MKT/SMB/HML."""
+    f3 = factors()
+    f5 = _blocks(D + "F-F_Research_Data_5_Factors_2x3_daily.csv")[0]
+    st = _blocks(D + "F-F_ST_Reversal_Factor_daily.csv")[0]; st.columns = ["STR"]
+    lt = _blocks(D + "F-F_LT_Reversal_Factor_Daily.csv")[0]; lt.columns = ["LTR"]
+    out = f3.copy(); out["RMW"] = f5["RMW"]; out["CMA"] = f5["CMA"]
+    return out.join(st, how="left").join(lt, how="left")

@@ -135,3 +135,38 @@ refit each January on past data only; 20y burn-in so OOS = 1947-2026; long top-1
 
 Placebo (time-shifted predictors) net Sharpe mean -1.01 (max -0.77): the network signal is real in aggregate. Turnover ~150x/yr; breakeven cost ~2 bps/side pre-1990 only, ~0 post-1990.
 Own-lag-only model: net -0.26. **Verdict: a real effect that was arbitraged away (strong pre-1990, ~0 gross after 2010); not tradeable.** Files: oaf/kf.py, oaf/leadlag.py, 06_industry_leadlag.py, results/ll_*.
+
+---
+
+# Iteration 5 (allsam): Slow, fixed-rule premia sleeves (factor momentum + industry momentum + turn-of-month) - REAL ON PAPER, WEAK WHEN IMPLEMENTABLE
+
+Motivation: iterations 1-4 show fast single signals decay/die on costs. Literature (McLean-Pontiff; Ehsani-Linnainmaa; Hurst-Ooi-Pedersen) says slow structural premia survive better.
+No fitted parameters: all rules are textbook (12m trailing sign for factor momentum, 12-1 industry momentum top/bottom 10, turn-of-month window = last day + first 3 days).
+Data: Ken French daily factors (3/5-factor, UMD, ST/LT reversal) and 49 industries, 1926-2026 (survivorship-free but paper portfolios).
+
+## Sleeves (net of flip costs: 10bp factor_mom, 5bp ind_mom, 1bp tom), Sharpe by era
+| Sleeve | all | 1927-62 | 1963-89 | 1990-2009 | 2010-26 |
+|---|---|---|---|---|---|
+| factor momentum (SMB,HML,RMW,CMA,UMD) | 0.76 | 0.41 | 1.45 | 0.84 | 0.17 |
+| industry momentum 12-1 | 0.51 | 0.41 | 0.99 | 0.43 | 0.41 |
+| turn-of-month (Mkt) | 0.79 | 1.06 | 0.94 | 0.48 | 0.41 |
+| vol-managed market | 0.48 | 0.43 | 0.44 | 0.46 | 0.72 |
+| market buy&hold | 0.46 | 0.45 | 0.36 | 0.33 | 0.76 |
+Sleeve correlations are low (factor/industry mom 0.5; tom 0.4 with market; others ~0).
+
+## Equal-risk combination "slow3" (fm + im + tom, each scaled to 10% vol with lagged trailing vol)
+Sharpe: all 1.28; 1928-62 1.27; 1963-89 1.86; 1990-2009 1.16; **2010-26 0.53; 2020-26 0.66** (market B&H 0.76 in 2010-26). 9.0%/yr at 7% vol, maxDD -18%, beta 0.09.
+Alpha vs market: +8.3%/yr (t=10.6) all; +7.8% (t=4.5) 1990-2009; **+2.6% (t=1.6) 2010-26, not significant**. Block-bootstrap Sharpe CI 2010+: [0.11, 0.97].
+
+## Implementability check (Yahoo ETFs, 2000-2026)  -> this is the sobering part
+| Instrument | Sharpe 2000-26 | 2020-26 |
+|---|---|---|
+| 9 SPDR sector ETFs, 12-1 mom, top3/bottom3, 0bp | 0.08 | 0.28 |
+| same, 5bp/side | 0.04 | 0.25 |
+| SPY turn-of-month, 1bp / 5bp | 0.37 / 0.25 | 0.54 / 0.42 |
+| SPY buy&hold | 0.50 | 0.79 |
+Industry momentum disappears with 9 coarse sector ETFs (0.4 with 49 granular industries); TOM survives but is a low-vol diversifier, not a Sharpe beater.
+
+## Verdict
+The long-run premia are statistically strong (t>10) but (1) alpha has shrunk to ~2.6%/yr and is insignificant in the last 17 years, (2) factor/industry portfolios are paper (underlying rebalancing costs unmodelled),
+(3) tradeable proxies are much weaker. This is a defensible low-beta diversified core, not a standalone alpha claim. Files: oaf/premia.py, 07_premia_sleeves.py, 08_premia_combo.py, 09_implementable_check.py, results/premia_*, combo_*, impl_pnl.pkl.
