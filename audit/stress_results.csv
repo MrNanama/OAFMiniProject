@@ -1,0 +1,29 @@
+strategy,case,SR_dev,SR_hold,ret_hold,DD_hold
+s15_rebalancing_flows,base,0.51,1.03,0.033,-0.058
+s15_rebalancing_flows,cost x2,0.36,0.87,0.027,-0.068
+s15_rebalancing_flows,cost x3,0.2,0.7,0.022,-0.078
+s15_rebalancing_flows,cost x5,-0.1,0.36,0.011,-0.098
+s12_crypto_trend,base,1.65,0.52,0.048,-0.169
+s12_crypto_trend,cost x2,1.64,0.48,0.045,-0.174
+s12_crypto_trend,cost x3,1.62,0.45,0.042,-0.178
+s12_crypto_trend,cost x5,1.59,0.39,0.037,-0.187
+s12_crypto_trend,exec +1 day,1.62,0.51,0.048,-0.171
+s09_vrp_timing,base,0.54,0.21,0.015,-0.123
+s09_vrp_timing,cost x2,0.46,0.12,0.008,-0.133
+s09_vrp_timing,cost x3,0.38,0.02,0.002,-0.143
+s09_vrp_timing,cost x5,0.22,-0.16,-0.011,-0.162
+s09_vrp_timing,exec +1 day,0.42,0.72,0.052,-0.092
+s11_cross_asset_carry,base,0.25,0.3,0.033,-0.264
+s11_cross_asset_carry,cost x2,0.22,0.28,0.03,-0.266
+s11_cross_asset_carry,cost x3,0.18,0.25,0.027,-0.268
+s11_cross_asset_carry,cost x5,0.1,0.19,0.02,-0.272
+s11_cross_asset_carry,exec +1 day,0.26,0.25,0.027,-0.266
+s10_turn_of_month,base,0.8,0.41,0.021,-0.088
+s10_turn_of_month,cost x2,0.6,0.23,0.012,-0.09
+s10_turn_of_month,cost x3,0.4,0.06,0.003,-0.098
+s10_turn_of_month,cost x5,0.0,-0.3,-0.015,-0.138
+s01_gp_trend,base,0.41,0.08,0.009,-0.334
+s01_gp_trend,cost x2,0.32,-0.03,-0.003,-0.359
+s01_gp_trend,cost x3,0.22,-0.14,-0.016,-0.384
+s01_gp_trend,cost x5,0.04,-0.37,-0.04,-0.431
+s01_gp_trend,exec +1 day,0.44,0.07,0.008,-0.355
