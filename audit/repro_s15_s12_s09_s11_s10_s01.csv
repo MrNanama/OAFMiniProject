@@ -1,0 +1,7 @@
+strategy,SR_dev_mine,SR_dev_author,SR_hold_mine,SR_hold_author,DD_hold_mine,DD_hold_author,vol_hold
+s15_rebalancing_flows,0.52,0.52,1.03,1.03,-0.058,-0.058,0.032
+s12_crypto_trend,1.76,1.76,0.52,0.52,-0.169,-0.169,0.093
+s09_vrp_timing,0.71,0.71,0.21,0.21,-0.123,-0.123,0.07
+s11_cross_asset_carry,0.28,0.28,0.3,0.3,-0.264,-0.264,0.11
+s10_turn_of_month,0.8,0.93,0.41,0.29,-0.088,-0.094,0.051
+s01_gp_trend,0.41,0.41,0.08,0.08,-0.334,-0.334,0.11

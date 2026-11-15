@@ -1,0 +1,6 @@
+{'strategy': 's15_rebalancing_flows', 'SR_dev_mine': 0.52, 'SR_dev_author': np.float64(0.52), 'SR_hold_mine': 1.03, 'SR_hold_author': np.float64(1.03), 'DD_hold_mine': -0.058, 'DD_hold_author': np.float64(-0.058), 'vol_hold': 0.032}
+{'strategy': 's12_crypto_trend', 'SR_dev_mine': 1.76, 'SR_dev_author': np.float64(1.76), 'SR_hold_mine': 0.52, 'SR_hold_author': np.float64(0.52), 'DD_hold_mine': -0.169, 'DD_hold_author': np.float64(-0.169), 'vol_hold': 0.093}
+{'strategy': 's09_vrp_timing', 'SR_dev_mine': 0.71, 'SR_dev_author': np.float64(0.71), 'SR_hold_mine': 0.21, 'SR_hold_author': np.float64(0.21), 'DD_hold_mine': -0.123, 'DD_hold_author': np.float64(-0.123), 'vol_hold': 0.07}
+{'strategy': 's11_cross_asset_carry', 'SR_dev_mine': 0.28, 'SR_dev_author': np.float64(0.28), 'SR_hold_mine': 0.3, 'SR_hold_author': np.float64(0.3), 'DD_hold_mine': -0.264, 'DD_hold_author': np.float64(-0.264), 'vol_hold': 0.11}
+{'strategy': 's10_turn_of_month', 'SR_dev_mine': 0.8, 'SR_dev_author': np.float64(0.93), 'SR_hold_mine': 0.41, 'SR_hold_author': np.float64(0.29), 'DD_hold_mine': -0.088, 'DD_hold_author': np.float64(-0.094), 'vol_hold': 0.051}
+{'strategy': 's01_gp_trend', 'SR_dev_mine': 0.41, 'SR_dev_author': np.float64(0.41), 'SR_hold_mine': 0.08, 'SR_hold_author': np.float64(0.08), 'DD_hold_mine': -0.334, 'DD_hold_author': np.float64(-0.334), 'vol_hold': 0.11}
